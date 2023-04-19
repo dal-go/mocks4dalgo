@@ -31,6 +31,10 @@ type SingleRecordReader struct {
 	i    int
 }
 
+func (s *SingleRecordReader) Cursor() (string, error) {
+	return "", nil
+}
+
 func (s *SingleRecordReader) Next() (dal.Record, error) {
 	if s.i > 0 {
 		return nil, dal.ErrNoMoreRecords
@@ -44,7 +48,7 @@ func (s *SingleRecordReader) Next() (dal.Record, error) {
 	if err != nil {
 		return nil, err
 	}
-	return dal.NewRecordWithoutKey(data), err
+	return dal.NewRecordWithData(s.key, data), err
 }
 
 var _ dal.Reader = (*SingleRecordReader)(nil)
