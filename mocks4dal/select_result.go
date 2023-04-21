@@ -31,6 +31,10 @@ type SingleRecordReader struct {
 	i    int
 }
 
+func (s *SingleRecordReader) Close() error {
+	return nil
+}
+
 func (s *SingleRecordReader) Cursor() (string, error) {
 	return "", nil
 }
