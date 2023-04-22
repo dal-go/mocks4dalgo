@@ -7,16 +7,16 @@ import (
 
 // SelectResult is a helper class that can be used in test definitions (TT)
 type SelectResult struct {
-	Reader func(into func() interface{}) dal.Reader
+	Reader func(into func() dal.Record) dal.Reader
 	Err    error
 }
 
 // NewSelectResult creates new SelectResult
-func NewSelectResult(getReader func(into func() interface{}) dal.Reader, err error) SelectResult {
+func NewSelectResult(getReader func(into func() dal.Record) dal.Reader, err error) SelectResult {
 	if getReader == nil && err == nil {
 		panic("getReader == nil && Err == nil")
 	}
-	return SelectResult{Reader: func(into func() interface{}) dal.Reader {
+	return SelectResult{Reader: func(into func() dal.Record) dal.Reader {
 		if getReader == nil {
 			return nil
 		}

@@ -11,7 +11,7 @@ func TestNewSingleRecordReader(t *testing.T) {
 
 func TestNewSelectResult(t *testing.T) {
 	type args struct {
-		getReader func(into func() interface{}) dal.Reader
+		getReader func(into func() dal.Record) dal.Reader
 		err       error
 	}
 	tests := []struct {
@@ -19,7 +19,7 @@ func TestNewSelectResult(t *testing.T) {
 		args args
 		want SelectResult
 	}{
-		{"empty", args{func(into func() interface{}) dal.Reader {
+		{"empty", args{func(into func() dal.Record) dal.Reader {
 			return nil
 		}, nil}, SelectResult{nil, nil}},
 	}
