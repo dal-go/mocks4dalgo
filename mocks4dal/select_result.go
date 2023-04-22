@@ -1,67 +1,56 @@
 package mocks4dal
 
 import (
-	"encoding/json"
+	"errors"
 	"github.com/dal-go/dalgo/dal"
+	"time"
 )
 
 // SelectResult is a helper class that can be used in test definitions (TT)
 type SelectResult struct {
-	Reader func(into func() dal.Record) dal.Reader
+	Reader dal.Reader
 	Err    error
 }
 
 // NewSelectResult creates new SelectResult
-func NewSelectResult(getReader func(into func() dal.Record) dal.Reader, err error) SelectResult {
-	if getReader == nil && err == nil {
-		panic("getReader == nil && Err == nil")
-	}
-	return SelectResult{Reader: func(into func() dal.Record) dal.Reader {
-		if getReader == nil {
-			return nil
-		}
-		return getReader(into)
-	}, Err: err}
+func NewSelectResult(reader dal.Reader, err error) SelectResult {
+	return SelectResult{Reader: reader, Err: err}
 }
 
-type SingleRecordReader struct {
-	key  *dal.Key
-	data string
-	into func() dal.Record
-	i    int
+var _ dal.Reader = (*recordReader)(nil)
+
+type recordReader struct {
+	i       int
+	delay   time.Duration
+	records []dal.Record
 }
 
-func (s *SingleRecordReader) Close() error {
+func (reader *recordReader) Close() error {
 	return nil
 }
 
-func (s *SingleRecordReader) Cursor() (string, error) {
+func (reader *recordReader) Cursor() (string, error) {
+	reader.records = nil
+	reader.i = -1
 	return "", nil
 }
 
-func (s *SingleRecordReader) Next() (dal.Record, error) {
-	if s.i > 0 {
+func (reader *recordReader) Next() (record dal.Record, err error) {
+	if reader.i == -1 {
+		return nil, errors.New("reader is closed")
+	}
+	if reader.i >= len(reader.records) {
 		return nil, dal.ErrNoMoreRecords
 	}
-	s.i++
-	if s.data == "" {
-		panic("SingleRecordReader.data is empty")
+	if reader.delay > 0 {
+		time.Sleep(reader.delay)
 	}
-	record := s.into()
-	data := record.Data()
-	if recordData, isRecordData := data.(dal.RecordData); isRecordData {
-		data = recordData.DTO()
-	}
-	err := json.Unmarshal([]byte(s.data), data)
-	if err != nil {
-		return nil, err
-	}
-	return dal.NewRecordWithData(s.key, data), err
+	record = reader.records[reader.i]
+	reader.i++
+	return record, nil
 }
 
-var _ dal.Reader = (*SingleRecordReader)(nil)
-
-// NewSingleRecordReader creates a reader that returns a single record
-func NewSingleRecordReader(key *dal.Key, data string, into func() dal.Record) *SingleRecordReader {
-	return &SingleRecordReader{key: key, data: data, into: into}
+// NewRecordsReader creates a reader that returns given records
+func NewRecordsReader(delay time.Duration, records ...dal.Record) dal.Reader {
+	return &recordReader{delay: delay, records: records}
 }

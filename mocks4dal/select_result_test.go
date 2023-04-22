@@ -2,11 +2,12 @@ package mocks4dal
 
 import (
 	"github.com/dal-go/dalgo/dal"
+	"reflect"
 	"testing"
 )
 
-func TestNewSingleRecordReader(t *testing.T) {
-	NewSingleRecordReader(nil, "", nil)
+func TestNewRecordsReader(t *testing.T) {
+	NewRecordsReader(0, dal.NewRecordWithIncompleteKey("TestCollection", reflect.String, &struct{}{}))
 }
 
 func TestNewSelectResult(t *testing.T) {
