@@ -27,7 +27,7 @@ func NewSelectResult(getReader func(into func() dal.Record) dal.Reader, err erro
 type SingleRecordReader struct {
 	key  *dal.Key
 	data string
-	into func() interface{}
+	into func() dal.Record
 	i    int
 }
 
@@ -47,7 +47,11 @@ func (s *SingleRecordReader) Next() (dal.Record, error) {
 	if s.data == "" {
 		panic("SingleRecordReader.data is empty")
 	}
-	data := s.into()
+	record := s.into()
+	data := record.Data()
+	if recordData, isRecordData := data.(dal.RecordData); isRecordData {
+		data = recordData.DTO()
+	}
 	err := json.Unmarshal([]byte(s.data), data)
 	if err != nil {
 		return nil, err
@@ -58,6 +62,6 @@ func (s *SingleRecordReader) Next() (dal.Record, error) {
 var _ dal.Reader = (*SingleRecordReader)(nil)
 
 // NewSingleRecordReader creates a reader that returns a single record
-func NewSingleRecordReader(key *dal.Key, data string, into func() interface{}) *SingleRecordReader {
+func NewSingleRecordReader(key *dal.Key, data string, into func() dal.Record) *SingleRecordReader {
 	return &SingleRecordReader{key: key, data: data, into: into}
 }
