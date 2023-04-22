@@ -91,6 +91,36 @@ func (mr *MockDatabaseMockRecorder) ID() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ID", reflect.TypeOf((*MockDatabase)(nil).ID))
 }
 
+// QueryAllRecords mocks base method.
+func (m *MockDatabase) QueryAllRecords(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryAllRecords", arg0, arg1)
+	ret0, _ := ret[0].([]dal.Record)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryAllRecords indicates an expected call of QueryAllRecords.
+func (mr *MockDatabaseMockRecorder) QueryAllRecords(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryAllRecords", reflect.TypeOf((*MockDatabase)(nil).QueryAllRecords), arg0, arg1)
+}
+
+// QueryReader mocks base method.
+func (m *MockDatabase) QueryReader(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "QueryReader", arg0, arg1)
+	ret0, _ := ret[0].(dal.Reader)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// QueryReader indicates an expected call of QueryReader.
+func (mr *MockDatabaseMockRecorder) QueryReader(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryReader", reflect.TypeOf((*MockDatabase)(nil).QueryReader), arg0, arg1)
+}
+
 // RunReadonlyTransaction mocks base method.
 func (m *MockDatabase) RunReadonlyTransaction(arg0 context.Context, arg1 func(context.Context, dal.ReadTransaction) error, arg2 ...dal.TransactionOption) error {
 	m.ctrl.T.Helper()
@@ -127,96 +157,6 @@ func (mr *MockDatabaseMockRecorder) RunReadwriteTransaction(arg0, arg1 interface
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunReadwriteTransaction", reflect.TypeOf((*MockDatabase)(nil).RunReadwriteTransaction), varargs...)
-}
-
-// Select mocks base method.
-func (m *MockDatabase) Select(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Select", arg0, arg1)
-	ret0, _ := ret[0].(dal.Reader)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Select indicates an expected call of Select.
-func (mr *MockDatabaseMockRecorder) Select(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Select", reflect.TypeOf((*MockDatabase)(nil).Select), arg0, arg1)
-}
-
-// SelectAll mocks base method.
-func (m *MockDatabase) SelectAll(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAll", arg0, arg1)
-	ret0, _ := ret[0].([]dal.Record)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAll indicates an expected call of SelectAll.
-func (mr *MockDatabaseMockRecorder) SelectAll(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAll", reflect.TypeOf((*MockDatabase)(nil).SelectAll), arg0, arg1)
-}
-
-// SelectAllIDs mocks base method.
-func (m *MockDatabase) SelectAllIDs(arg0 context.Context, arg1 dal.Query) ([]interface{}, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIDs", arg0, arg1)
-	ret0, _ := ret[0].([]interface{})
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllIDs indicates an expected call of SelectAllIDs.
-func (mr *MockDatabaseMockRecorder) SelectAllIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIDs", reflect.TypeOf((*MockDatabase)(nil).SelectAllIDs), arg0, arg1)
-}
-
-// SelectAllInt64IDs mocks base method.
-func (m *MockDatabase) SelectAllInt64IDs(arg0 context.Context, arg1 dal.Query) ([]int64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllInt64IDs", arg0, arg1)
-	ret0, _ := ret[0].([]int64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllInt64IDs indicates an expected call of SelectAllInt64IDs.
-func (mr *MockDatabaseMockRecorder) SelectAllInt64IDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllInt64IDs", reflect.TypeOf((*MockDatabase)(nil).SelectAllInt64IDs), arg0, arg1)
-}
-
-// SelectAllIntIDs mocks base method.
-func (m *MockDatabase) SelectAllIntIDs(arg0 context.Context, arg1 dal.Query) ([]int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIntIDs", arg0, arg1)
-	ret0, _ := ret[0].([]int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllIntIDs indicates an expected call of SelectAllIntIDs.
-func (mr *MockDatabaseMockRecorder) SelectAllIntIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIntIDs", reflect.TypeOf((*MockDatabase)(nil).SelectAllIntIDs), arg0, arg1)
-}
-
-// SelectAllStrIDs mocks base method.
-func (m *MockDatabase) SelectAllStrIDs(arg0 context.Context, arg1 dal.Query) ([]string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllStrIDs", arg0, arg1)
-	ret0, _ := ret[0].([]string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllStrIDs indicates an expected call of SelectAllStrIDs.
-func (mr *MockDatabaseMockRecorder) SelectAllStrIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllStrIDs", reflect.TypeOf((*MockDatabase)(nil).SelectAllStrIDs), arg0, arg1)
 }
 
 // MockTransactionCoordinator is a mock of TransactionCoordinator interface.
@@ -466,94 +406,34 @@ func (mr *MockReadTransactionMockRecorder) Options() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Options", reflect.TypeOf((*MockReadTransaction)(nil).Options))
 }
 
-// Select mocks base method.
-func (m *MockReadTransaction) Select(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
+// QueryAllRecords mocks base method.
+func (m *MockReadTransaction) QueryAllRecords(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Select", arg0, arg1)
-	ret0, _ := ret[0].(dal.Reader)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Select indicates an expected call of Select.
-func (mr *MockReadTransactionMockRecorder) Select(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Select", reflect.TypeOf((*MockReadTransaction)(nil).Select), arg0, arg1)
-}
-
-// SelectAll mocks base method.
-func (m *MockReadTransaction) SelectAll(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAll", arg0, arg1)
+	ret := m.ctrl.Call(m, "QueryAllRecords", arg0, arg1)
 	ret0, _ := ret[0].([]dal.Record)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// SelectAll indicates an expected call of SelectAll.
-func (mr *MockReadTransactionMockRecorder) SelectAll(arg0, arg1 interface{}) *gomock.Call {
+// QueryAllRecords indicates an expected call of QueryAllRecords.
+func (mr *MockReadTransactionMockRecorder) QueryAllRecords(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAll", reflect.TypeOf((*MockReadTransaction)(nil).SelectAll), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryAllRecords", reflect.TypeOf((*MockReadTransaction)(nil).QueryAllRecords), arg0, arg1)
 }
 
-// SelectAllIDs mocks base method.
-func (m *MockReadTransaction) SelectAllIDs(arg0 context.Context, arg1 dal.Query) ([]interface{}, error) {
+// QueryReader mocks base method.
+func (m *MockReadTransaction) QueryReader(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIDs", arg0, arg1)
-	ret0, _ := ret[0].([]interface{})
+	ret := m.ctrl.Call(m, "QueryReader", arg0, arg1)
+	ret0, _ := ret[0].(dal.Reader)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// SelectAllIDs indicates an expected call of SelectAllIDs.
-func (mr *MockReadTransactionMockRecorder) SelectAllIDs(arg0, arg1 interface{}) *gomock.Call {
+// QueryReader indicates an expected call of QueryReader.
+func (mr *MockReadTransactionMockRecorder) QueryReader(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIDs", reflect.TypeOf((*MockReadTransaction)(nil).SelectAllIDs), arg0, arg1)
-}
-
-// SelectAllInt64IDs mocks base method.
-func (m *MockReadTransaction) SelectAllInt64IDs(arg0 context.Context, arg1 dal.Query) ([]int64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllInt64IDs", arg0, arg1)
-	ret0, _ := ret[0].([]int64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllInt64IDs indicates an expected call of SelectAllInt64IDs.
-func (mr *MockReadTransactionMockRecorder) SelectAllInt64IDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllInt64IDs", reflect.TypeOf((*MockReadTransaction)(nil).SelectAllInt64IDs), arg0, arg1)
-}
-
-// SelectAllIntIDs mocks base method.
-func (m *MockReadTransaction) SelectAllIntIDs(arg0 context.Context, arg1 dal.Query) ([]int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIntIDs", arg0, arg1)
-	ret0, _ := ret[0].([]int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllIntIDs indicates an expected call of SelectAllIntIDs.
-func (mr *MockReadTransactionMockRecorder) SelectAllIntIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIntIDs", reflect.TypeOf((*MockReadTransaction)(nil).SelectAllIntIDs), arg0, arg1)
-}
-
-// SelectAllStrIDs mocks base method.
-func (m *MockReadTransaction) SelectAllStrIDs(arg0 context.Context, arg1 dal.Query) ([]string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllStrIDs", arg0, arg1)
-	ret0, _ := ret[0].([]string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllStrIDs indicates an expected call of SelectAllStrIDs.
-func (mr *MockReadTransactionMockRecorder) SelectAllStrIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllStrIDs", reflect.TypeOf((*MockReadTransaction)(nil).SelectAllStrIDs), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryReader", reflect.TypeOf((*MockReadTransaction)(nil).QueryReader), arg0, arg1)
 }
 
 // MockReadwriteTransaction is a mock of ReadwriteTransaction interface.
@@ -682,94 +562,34 @@ func (mr *MockReadwriteTransactionMockRecorder) Options() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Options", reflect.TypeOf((*MockReadwriteTransaction)(nil).Options))
 }
 
-// Select mocks base method.
-func (m *MockReadwriteTransaction) Select(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
+// QueryAllRecords mocks base method.
+func (m *MockReadwriteTransaction) QueryAllRecords(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Select", arg0, arg1)
-	ret0, _ := ret[0].(dal.Reader)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Select indicates an expected call of Select.
-func (mr *MockReadwriteTransactionMockRecorder) Select(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Select", reflect.TypeOf((*MockReadwriteTransaction)(nil).Select), arg0, arg1)
-}
-
-// SelectAll mocks base method.
-func (m *MockReadwriteTransaction) SelectAll(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAll", arg0, arg1)
+	ret := m.ctrl.Call(m, "QueryAllRecords", arg0, arg1)
 	ret0, _ := ret[0].([]dal.Record)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// SelectAll indicates an expected call of SelectAll.
-func (mr *MockReadwriteTransactionMockRecorder) SelectAll(arg0, arg1 interface{}) *gomock.Call {
+// QueryAllRecords indicates an expected call of QueryAllRecords.
+func (mr *MockReadwriteTransactionMockRecorder) QueryAllRecords(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAll", reflect.TypeOf((*MockReadwriteTransaction)(nil).SelectAll), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryAllRecords", reflect.TypeOf((*MockReadwriteTransaction)(nil).QueryAllRecords), arg0, arg1)
 }
 
-// SelectAllIDs mocks base method.
-func (m *MockReadwriteTransaction) SelectAllIDs(arg0 context.Context, arg1 dal.Query) ([]interface{}, error) {
+// QueryReader mocks base method.
+func (m *MockReadwriteTransaction) QueryReader(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIDs", arg0, arg1)
-	ret0, _ := ret[0].([]interface{})
+	ret := m.ctrl.Call(m, "QueryReader", arg0, arg1)
+	ret0, _ := ret[0].(dal.Reader)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// SelectAllIDs indicates an expected call of SelectAllIDs.
-func (mr *MockReadwriteTransactionMockRecorder) SelectAllIDs(arg0, arg1 interface{}) *gomock.Call {
+// QueryReader indicates an expected call of QueryReader.
+func (mr *MockReadwriteTransactionMockRecorder) QueryReader(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIDs", reflect.TypeOf((*MockReadwriteTransaction)(nil).SelectAllIDs), arg0, arg1)
-}
-
-// SelectAllInt64IDs mocks base method.
-func (m *MockReadwriteTransaction) SelectAllInt64IDs(arg0 context.Context, arg1 dal.Query) ([]int64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllInt64IDs", arg0, arg1)
-	ret0, _ := ret[0].([]int64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllInt64IDs indicates an expected call of SelectAllInt64IDs.
-func (mr *MockReadwriteTransactionMockRecorder) SelectAllInt64IDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllInt64IDs", reflect.TypeOf((*MockReadwriteTransaction)(nil).SelectAllInt64IDs), arg0, arg1)
-}
-
-// SelectAllIntIDs mocks base method.
-func (m *MockReadwriteTransaction) SelectAllIntIDs(arg0 context.Context, arg1 dal.Query) ([]int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIntIDs", arg0, arg1)
-	ret0, _ := ret[0].([]int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllIntIDs indicates an expected call of SelectAllIntIDs.
-func (mr *MockReadwriteTransactionMockRecorder) SelectAllIntIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIntIDs", reflect.TypeOf((*MockReadwriteTransaction)(nil).SelectAllIntIDs), arg0, arg1)
-}
-
-// SelectAllStrIDs mocks base method.
-func (m *MockReadwriteTransaction) SelectAllStrIDs(arg0 context.Context, arg1 dal.Query) ([]string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllStrIDs", arg0, arg1)
-	ret0, _ := ret[0].([]string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllStrIDs indicates an expected call of SelectAllStrIDs.
-func (mr *MockReadwriteTransactionMockRecorder) SelectAllStrIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllStrIDs", reflect.TypeOf((*MockReadwriteTransaction)(nil).SelectAllStrIDs), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryReader", reflect.TypeOf((*MockReadwriteTransaction)(nil).QueryReader), arg0, arg1)
 }
 
 // Set mocks base method.
@@ -889,94 +709,34 @@ func (mr *MockReadSessionMockRecorder) GetMulti(arg0, arg1 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMulti", reflect.TypeOf((*MockReadSession)(nil).GetMulti), arg0, arg1)
 }
 
-// Select mocks base method.
-func (m *MockReadSession) Select(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
+// QueryAllRecords mocks base method.
+func (m *MockReadSession) QueryAllRecords(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Select", arg0, arg1)
-	ret0, _ := ret[0].(dal.Reader)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Select indicates an expected call of Select.
-func (mr *MockReadSessionMockRecorder) Select(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Select", reflect.TypeOf((*MockReadSession)(nil).Select), arg0, arg1)
-}
-
-// SelectAll mocks base method.
-func (m *MockReadSession) SelectAll(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAll", arg0, arg1)
+	ret := m.ctrl.Call(m, "QueryAllRecords", arg0, arg1)
 	ret0, _ := ret[0].([]dal.Record)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// SelectAll indicates an expected call of SelectAll.
-func (mr *MockReadSessionMockRecorder) SelectAll(arg0, arg1 interface{}) *gomock.Call {
+// QueryAllRecords indicates an expected call of QueryAllRecords.
+func (mr *MockReadSessionMockRecorder) QueryAllRecords(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAll", reflect.TypeOf((*MockReadSession)(nil).SelectAll), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryAllRecords", reflect.TypeOf((*MockReadSession)(nil).QueryAllRecords), arg0, arg1)
 }
 
-// SelectAllIDs mocks base method.
-func (m *MockReadSession) SelectAllIDs(arg0 context.Context, arg1 dal.Query) ([]interface{}, error) {
+// QueryReader mocks base method.
+func (m *MockReadSession) QueryReader(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIDs", arg0, arg1)
-	ret0, _ := ret[0].([]interface{})
+	ret := m.ctrl.Call(m, "QueryReader", arg0, arg1)
+	ret0, _ := ret[0].(dal.Reader)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// SelectAllIDs indicates an expected call of SelectAllIDs.
-func (mr *MockReadSessionMockRecorder) SelectAllIDs(arg0, arg1 interface{}) *gomock.Call {
+// QueryReader indicates an expected call of QueryReader.
+func (mr *MockReadSessionMockRecorder) QueryReader(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIDs", reflect.TypeOf((*MockReadSession)(nil).SelectAllIDs), arg0, arg1)
-}
-
-// SelectAllInt64IDs mocks base method.
-func (m *MockReadSession) SelectAllInt64IDs(arg0 context.Context, arg1 dal.Query) ([]int64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllInt64IDs", arg0, arg1)
-	ret0, _ := ret[0].([]int64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllInt64IDs indicates an expected call of SelectAllInt64IDs.
-func (mr *MockReadSessionMockRecorder) SelectAllInt64IDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllInt64IDs", reflect.TypeOf((*MockReadSession)(nil).SelectAllInt64IDs), arg0, arg1)
-}
-
-// SelectAllIntIDs mocks base method.
-func (m *MockReadSession) SelectAllIntIDs(arg0 context.Context, arg1 dal.Query) ([]int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIntIDs", arg0, arg1)
-	ret0, _ := ret[0].([]int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllIntIDs indicates an expected call of SelectAllIntIDs.
-func (mr *MockReadSessionMockRecorder) SelectAllIntIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIntIDs", reflect.TypeOf((*MockReadSession)(nil).SelectAllIntIDs), arg0, arg1)
-}
-
-// SelectAllStrIDs mocks base method.
-func (m *MockReadSession) SelectAllStrIDs(arg0 context.Context, arg1 dal.Query) ([]string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllStrIDs", arg0, arg1)
-	ret0, _ := ret[0].([]string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllStrIDs indicates an expected call of SelectAllStrIDs.
-func (mr *MockReadSessionMockRecorder) SelectAllStrIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllStrIDs", reflect.TypeOf((*MockReadSession)(nil).SelectAllStrIDs), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryReader", reflect.TypeOf((*MockReadSession)(nil).QueryReader), arg0, arg1)
 }
 
 // MockWriteSession is a mock of WriteSession interface.
@@ -1213,94 +973,34 @@ func (mr *MockReadwriteSessionMockRecorder) Insert(arg0, arg1 interface{}, arg2 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Insert", reflect.TypeOf((*MockReadwriteSession)(nil).Insert), varargs...)
 }
 
-// Select mocks base method.
-func (m *MockReadwriteSession) Select(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
+// QueryAllRecords mocks base method.
+func (m *MockReadwriteSession) QueryAllRecords(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Select", arg0, arg1)
-	ret0, _ := ret[0].(dal.Reader)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Select indicates an expected call of Select.
-func (mr *MockReadwriteSessionMockRecorder) Select(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Select", reflect.TypeOf((*MockReadwriteSession)(nil).Select), arg0, arg1)
-}
-
-// SelectAll mocks base method.
-func (m *MockReadwriteSession) SelectAll(arg0 context.Context, arg1 dal.Query) ([]dal.Record, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAll", arg0, arg1)
+	ret := m.ctrl.Call(m, "QueryAllRecords", arg0, arg1)
 	ret0, _ := ret[0].([]dal.Record)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// SelectAll indicates an expected call of SelectAll.
-func (mr *MockReadwriteSessionMockRecorder) SelectAll(arg0, arg1 interface{}) *gomock.Call {
+// QueryAllRecords indicates an expected call of QueryAllRecords.
+func (mr *MockReadwriteSessionMockRecorder) QueryAllRecords(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAll", reflect.TypeOf((*MockReadwriteSession)(nil).SelectAll), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryAllRecords", reflect.TypeOf((*MockReadwriteSession)(nil).QueryAllRecords), arg0, arg1)
 }
 
-// SelectAllIDs mocks base method.
-func (m *MockReadwriteSession) SelectAllIDs(arg0 context.Context, arg1 dal.Query) ([]interface{}, error) {
+// QueryReader mocks base method.
+func (m *MockReadwriteSession) QueryReader(arg0 context.Context, arg1 dal.Query) (dal.Reader, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIDs", arg0, arg1)
-	ret0, _ := ret[0].([]interface{})
+	ret := m.ctrl.Call(m, "QueryReader", arg0, arg1)
+	ret0, _ := ret[0].(dal.Reader)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// SelectAllIDs indicates an expected call of SelectAllIDs.
-func (mr *MockReadwriteSessionMockRecorder) SelectAllIDs(arg0, arg1 interface{}) *gomock.Call {
+// QueryReader indicates an expected call of QueryReader.
+func (mr *MockReadwriteSessionMockRecorder) QueryReader(arg0, arg1 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIDs", reflect.TypeOf((*MockReadwriteSession)(nil).SelectAllIDs), arg0, arg1)
-}
-
-// SelectAllInt64IDs mocks base method.
-func (m *MockReadwriteSession) SelectAllInt64IDs(arg0 context.Context, arg1 dal.Query) ([]int64, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllInt64IDs", arg0, arg1)
-	ret0, _ := ret[0].([]int64)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllInt64IDs indicates an expected call of SelectAllInt64IDs.
-func (mr *MockReadwriteSessionMockRecorder) SelectAllInt64IDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllInt64IDs", reflect.TypeOf((*MockReadwriteSession)(nil).SelectAllInt64IDs), arg0, arg1)
-}
-
-// SelectAllIntIDs mocks base method.
-func (m *MockReadwriteSession) SelectAllIntIDs(arg0 context.Context, arg1 dal.Query) ([]int, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllIntIDs", arg0, arg1)
-	ret0, _ := ret[0].([]int)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllIntIDs indicates an expected call of SelectAllIntIDs.
-func (mr *MockReadwriteSessionMockRecorder) SelectAllIntIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllIntIDs", reflect.TypeOf((*MockReadwriteSession)(nil).SelectAllIntIDs), arg0, arg1)
-}
-
-// SelectAllStrIDs mocks base method.
-func (m *MockReadwriteSession) SelectAllStrIDs(arg0 context.Context, arg1 dal.Query) ([]string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "SelectAllStrIDs", arg0, arg1)
-	ret0, _ := ret[0].([]string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// SelectAllStrIDs indicates an expected call of SelectAllStrIDs.
-func (mr *MockReadwriteSessionMockRecorder) SelectAllStrIDs(arg0, arg1 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelectAllStrIDs", reflect.TypeOf((*MockReadwriteSession)(nil).SelectAllStrIDs), arg0, arg1)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryReader", reflect.TypeOf((*MockReadwriteSession)(nil).QueryReader), arg0, arg1)
 }
 
 // Set mocks base method.
