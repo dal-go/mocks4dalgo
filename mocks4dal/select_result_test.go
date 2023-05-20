@@ -20,13 +20,17 @@ func TestNewSelectResult(t *testing.T) {
 		args args
 		want SelectResult
 	}{
-		{"empty", args{func(into func() dal.Record) dal.Reader {
-			return nil
-		}, nil}, SelectResult{nil, nil}},
+		{"empty", args{
+			getReader: func(into func() dal.Record) dal.Reader {
+				return nil
+			},
+			err: nil,
+		}, SelectResult{nil, nil}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			_ = NewSelectResult(tt.args.getReader, tt.args.err)
+			reader := tt.args.getReader(nil)
+			_ = NewSelectResult(reader, tt.args.err)
 		})
 	}
 }
