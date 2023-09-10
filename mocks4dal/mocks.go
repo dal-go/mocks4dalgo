@@ -36,17 +36,17 @@ func (m *MockDatabase) EXPECT() *MockDatabaseMockRecorder {
 }
 
 // Client mocks base method.
-func (m *MockDatabase) Client() dal.ClientInfo {
+func (m *MockDatabase) Adapter() dal.Adapter {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Client")
-	ret0, _ := ret[0].(dal.ClientInfo)
+	ret := m.ctrl.Call(m, "Adapter")
+	ret0, _ := ret[0].(dal.Adapter)
 	return ret0
 }
 
 // Client indicates an expected call of Client.
 func (mr *MockDatabaseMockRecorder) Client() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Client", reflect.TypeOf((*MockDatabase)(nil).Client))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Client", reflect.TypeOf((*MockDatabase)(nil).Adapter))
 }
 
 // Get mocks base method.

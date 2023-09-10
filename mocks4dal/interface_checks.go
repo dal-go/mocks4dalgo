@@ -2,7 +2,7 @@ package mocks4dal
 
 import "github.com/dal-go/dalgo/dal"
 
-var _ dal.Database = (*MockDatabase)(nil)
+var _ dal.DB = (*MockDatabase)(nil)
 var _ dal.ReadSession = (*MockReadSession)(nil)
 var _ dal.WriteSession = (*MockWriteSession)(nil)
 var _ dal.ReadwriteSession = (*MockReadwriteSession)(nil)
