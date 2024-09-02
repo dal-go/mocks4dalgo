@@ -443,8 +443,12 @@ type MockReadwriteTransaction struct {
 }
 
 func (m *MockReadwriteTransaction) InsertMulti(ctx context.Context, records []dal.Record, opts ...dal.InsertOption) error {
-	//TODO implement me
-	panic("implement me")
+	for _, record := range records {
+		if err := m.Insert(ctx, record, opts...); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // MockReadwriteTransactionMockRecorder is the mock recorder for MockReadwriteTransaction.
@@ -751,8 +755,12 @@ type MockWriteSession struct {
 }
 
 func (m *MockWriteSession) InsertMulti(ctx context.Context, records []dal.Record, opts ...dal.InsertOption) error {
-	//TODO implement me
-	panic("implement me")
+	for _, record := range records {
+		if err := m.Insert(ctx, record, opts...); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // MockWriteSessionMockRecorder is the mock recorder for MockWriteSession.
@@ -892,8 +900,12 @@ type MockReadwriteSession struct {
 }
 
 func (m *MockReadwriteSession) InsertMulti(ctx context.Context, records []dal.Record, opts ...dal.InsertOption) error {
-	//TODO implement me
-	panic("implement me")
+	for _, record := range records {
+		if err := m.Insert(ctx, record, opts...); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // MockReadwriteSessionMockRecorder is the mock recorder for MockReadwriteSession.
