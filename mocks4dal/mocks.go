@@ -442,6 +442,11 @@ type MockReadwriteTransaction struct {
 	recorder *MockReadwriteTransactionMockRecorder
 }
 
+func (m *MockReadwriteTransaction) InsertMulti(ctx context.Context, records []dal.Record, opts ...dal.InsertOption) error {
+	//TODO implement me
+	panic("implement me")
+}
+
 // MockReadwriteTransactionMockRecorder is the mock recorder for MockReadwriteTransaction.
 type MockReadwriteTransactionMockRecorder struct {
 	mock *MockReadwriteTransaction
@@ -745,6 +750,11 @@ type MockWriteSession struct {
 	recorder *MockWriteSessionMockRecorder
 }
 
+func (m *MockWriteSession) InsertMulti(ctx context.Context, records []dal.Record, opts ...dal.InsertOption) error {
+	//TODO implement me
+	panic("implement me")
+}
+
 // MockWriteSessionMockRecorder is the mock recorder for MockWriteSession.
 type MockWriteSessionMockRecorder struct {
 	mock *MockWriteSession
@@ -879,6 +889,11 @@ func (mr *MockWriteSessionMockRecorder) UpdateMulti(arg0, arg1, arg2 interface{}
 type MockReadwriteSession struct {
 	ctrl     *gomock.Controller
 	recorder *MockReadwriteSessionMockRecorder
+}
+
+func (m *MockReadwriteSession) InsertMulti(ctx context.Context, records []dal.Record, opts ...dal.InsertOption) error {
+	//TODO implement me
+	panic("implement me")
 }
 
 // MockReadwriteSessionMockRecorder is the mock recorder for MockReadwriteSession.
