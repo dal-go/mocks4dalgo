@@ -3,7 +3,7 @@ module github.com/dal-go/mocks4dalgo
 go 1.22
 
 require (
-	github.com/dal-go/dalgo v0.13.2
+	github.com/dal-go/dalgo v0.14.0
 	github.com/golang/mock v1.6.0
 	github.com/stretchr/testify v1.9.0
 )
