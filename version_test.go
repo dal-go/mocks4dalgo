@@ -1,10 +1,12 @@
 package mocks4dalgo
 
 import (
-	"github.com/stretchr/testify/assert"
+	"strings"
 	"testing"
 )
 
 func TestVersion(t *testing.T) {
-	assert.NotEmptyf(t, Version, "Version is empty")
+	if strings.HasPrefix(Version, "v") == false {
+		t.Errorf("Version should start with a 'v'")
+	}
 }

@@ -1,4 +1,4 @@
-package mocks4dal
+package mock_dal
 
 import (
 	"github.com/dal-go/dalgo/dal"
