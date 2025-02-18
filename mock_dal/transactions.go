@@ -392,3 +392,22 @@ func (mr *MockReadwriteTransactionMockRecorder) UpdateMulti(ctx, keys, updates a
 	varargs := append([]any{ctx, keys, updates}, preconditions...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateMulti", reflect.TypeOf((*MockReadwriteTransaction)(nil).UpdateMulti), varargs...)
 }
+
+// UpdateRecord mocks base method.
+func (m *MockReadwriteTransaction) UpdateRecord(ctx context.Context, record dal.Record, updates []dal.Update, preconditions ...dal.Precondition) error {
+	m.ctrl.T.Helper()
+	varargs := []any{ctx, record, updates}
+	for _, a := range preconditions {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "UpdateRecord", varargs...)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateRecord indicates an expected call of UpdateRecord.
+func (mr *MockReadwriteTransactionMockRecorder) UpdateRecord(ctx, record, updates any, preconditions ...any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]any{ctx, record, updates}, preconditions...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateRecord", reflect.TypeOf((*MockReadwriteTransaction)(nil).UpdateRecord), varargs...)
+}

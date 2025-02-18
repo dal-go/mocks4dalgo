@@ -3,7 +3,7 @@ module github.com/dal-go/mocks4dalgo
 go 1.22
 
 require (
-	github.com/dal-go/dalgo v0.16.1
+	github.com/dal-go/dalgo v0.17.0
 	go.uber.org/mock v0.5.0
 )
 
