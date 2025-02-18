@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 
 	dal "github.com/dal-go/dalgo/dal"
+	update "github.com/dal-go/dalgo/update"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -218,7 +219,7 @@ func (mr *MockWriteSessionMockRecorder) SetMulti(ctx, records any) *gomock.Call 
 }
 
 // Update mocks base method.
-func (m *MockWriteSession) Update(ctx context.Context, key *dal.Key, updates []dal.Update, preconditions ...dal.Precondition) error {
+func (m *MockWriteSession) Update(ctx context.Context, key *dal.Key, updates []update.Update, preconditions ...dal.Precondition) error {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, key, updates}
 	for _, a := range preconditions {
@@ -237,7 +238,7 @@ func (mr *MockWriteSessionMockRecorder) Update(ctx, key, updates any, preconditi
 }
 
 // UpdateMulti mocks base method.
-func (m *MockWriteSession) UpdateMulti(ctx context.Context, keys []*dal.Key, updates []dal.Update, preconditions ...dal.Precondition) error {
+func (m *MockWriteSession) UpdateMulti(ctx context.Context, keys []*dal.Key, updates []update.Update, preconditions ...dal.Precondition) error {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, keys, updates}
 	for _, a := range preconditions {
@@ -256,7 +257,7 @@ func (mr *MockWriteSessionMockRecorder) UpdateMulti(ctx, keys, updates any, prec
 }
 
 // UpdateRecord mocks base method.
-func (m *MockWriteSession) UpdateRecord(ctx context.Context, record dal.Record, updates []dal.Update, preconditions ...dal.Precondition) error {
+func (m *MockWriteSession) UpdateRecord(ctx context.Context, record dal.Record, updates []update.Update, preconditions ...dal.Precondition) error {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, record, updates}
 	for _, a := range preconditions {
@@ -451,7 +452,7 @@ func (mr *MockReadwriteSessionMockRecorder) SetMulti(ctx, records any) *gomock.C
 }
 
 // Update mocks base method.
-func (m *MockReadwriteSession) Update(ctx context.Context, key *dal.Key, updates []dal.Update, preconditions ...dal.Precondition) error {
+func (m *MockReadwriteSession) Update(ctx context.Context, key *dal.Key, updates []update.Update, preconditions ...dal.Precondition) error {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, key, updates}
 	for _, a := range preconditions {
@@ -470,7 +471,7 @@ func (mr *MockReadwriteSessionMockRecorder) Update(ctx, key, updates any, precon
 }
 
 // UpdateMulti mocks base method.
-func (m *MockReadwriteSession) UpdateMulti(ctx context.Context, keys []*dal.Key, updates []dal.Update, preconditions ...dal.Precondition) error {
+func (m *MockReadwriteSession) UpdateMulti(ctx context.Context, keys []*dal.Key, updates []update.Update, preconditions ...dal.Precondition) error {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, keys, updates}
 	for _, a := range preconditions {
@@ -489,7 +490,7 @@ func (mr *MockReadwriteSessionMockRecorder) UpdateMulti(ctx, keys, updates any, 
 }
 
 // UpdateRecord mocks base method.
-func (m *MockReadwriteSession) UpdateRecord(ctx context.Context, record dal.Record, updates []dal.Update, preconditions ...dal.Precondition) error {
+func (m *MockReadwriteSession) UpdateRecord(ctx context.Context, record dal.Record, updates []update.Update, preconditions ...dal.Precondition) error {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, record, updates}
 	for _, a := range preconditions {

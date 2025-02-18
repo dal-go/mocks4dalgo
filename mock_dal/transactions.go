@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 
 	dal "github.com/dal-go/dalgo/dal"
+	update "github.com/dal-go/dalgo/update"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -356,7 +357,7 @@ func (mr *MockReadwriteTransactionMockRecorder) SetMulti(ctx, records any) *gomo
 }
 
 // Update mocks base method.
-func (m *MockReadwriteTransaction) Update(ctx context.Context, key *dal.Key, updates []dal.Update, preconditions ...dal.Precondition) error {
+func (m *MockReadwriteTransaction) Update(ctx context.Context, key *dal.Key, updates []update.Update, preconditions ...dal.Precondition) error {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, key, updates}
 	for _, a := range preconditions {
@@ -375,7 +376,7 @@ func (mr *MockReadwriteTransactionMockRecorder) Update(ctx, key, updates any, pr
 }
 
 // UpdateMulti mocks base method.
-func (m *MockReadwriteTransaction) UpdateMulti(ctx context.Context, keys []*dal.Key, updates []dal.Update, preconditions ...dal.Precondition) error {
+func (m *MockReadwriteTransaction) UpdateMulti(ctx context.Context, keys []*dal.Key, updates []update.Update, preconditions ...dal.Precondition) error {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, keys, updates}
 	for _, a := range preconditions {
@@ -394,7 +395,7 @@ func (mr *MockReadwriteTransactionMockRecorder) UpdateMulti(ctx, keys, updates a
 }
 
 // UpdateRecord mocks base method.
-func (m *MockReadwriteTransaction) UpdateRecord(ctx context.Context, record dal.Record, updates []dal.Update, preconditions ...dal.Precondition) error {
+func (m *MockReadwriteTransaction) UpdateRecord(ctx context.Context, record dal.Record, updates []update.Update, preconditions ...dal.Precondition) error {
 	m.ctrl.T.Helper()
 	varargs := []any{ctx, record, updates}
 	for _, a := range preconditions {
