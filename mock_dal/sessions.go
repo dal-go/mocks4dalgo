@@ -42,6 +42,21 @@ func (m *MockReadSession) EXPECT() *MockReadSessionMockRecorder {
 	return m.recorder
 }
 
+// Exists mocks base method.
+func (m *MockReadSession) Exists(ctx context.Context, key *dal.Key) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Exists", ctx, key)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Exists indicates an expected call of Exists.
+func (mr *MockReadSessionMockRecorder) Exists(ctx, key any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exists", reflect.TypeOf((*MockReadSession)(nil).Exists), ctx, key)
+}
+
 // Get mocks base method.
 func (m *MockReadSession) Get(ctx context.Context, record dal.Record) error {
 	m.ctrl.T.Helper()
@@ -325,6 +340,21 @@ func (m *MockReadwriteSession) DeleteMulti(ctx context.Context, keys []*dal.Key)
 func (mr *MockReadwriteSessionMockRecorder) DeleteMulti(ctx, keys any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteMulti", reflect.TypeOf((*MockReadwriteSession)(nil).DeleteMulti), ctx, keys)
+}
+
+// Exists mocks base method.
+func (m *MockReadwriteSession) Exists(ctx context.Context, key *dal.Key) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Exists", ctx, key)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Exists indicates an expected call of Exists.
+func (mr *MockReadwriteSessionMockRecorder) Exists(ctx, key any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exists", reflect.TypeOf((*MockReadwriteSession)(nil).Exists), ctx, key)
 }
 
 // Get mocks base method.

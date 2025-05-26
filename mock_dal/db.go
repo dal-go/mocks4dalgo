@@ -55,6 +55,21 @@ func (mr *MockDBMockRecorder) Adapter() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Adapter", reflect.TypeOf((*MockDB)(nil).Adapter))
 }
 
+// Exists mocks base method.
+func (m *MockDB) Exists(ctx context.Context, key *dal.Key) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Exists", ctx, key)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Exists indicates an expected call of Exists.
+func (mr *MockDBMockRecorder) Exists(ctx, key any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Exists", reflect.TypeOf((*MockDB)(nil).Exists), ctx, key)
+}
+
 // Get mocks base method.
 func (m *MockDB) Get(ctx context.Context, record dal.Record) error {
 	m.ctrl.T.Helper()
