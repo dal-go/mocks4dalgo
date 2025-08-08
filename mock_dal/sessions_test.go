@@ -212,6 +212,13 @@ func TestMockWriteSession_Insert(t *testing.T) {
 		err := mockSession.Insert(ctx, &mockRecord{})
 		assert.NoError(t, err)
 	})
+	// Cover varargs path (opts)
+	var insOpt dal.InsertOption = nil
+	t.Run("insert with option", func(t *testing.T) {
+		mockSession.EXPECT().Insert(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		err := mockSession.Insert(ctx, &mockRecord{}, insOpt)
+		assert.NoError(t, err)
+	})
 
 	t.Run("insert error", func(t *testing.T) {
 		expectedErr := errors.New("insert error")
@@ -226,6 +233,14 @@ func TestMockWriteSession_Insert(t *testing.T) {
 		records := []dal.Record{&mockRecord{}}
 		mockSession.EXPECT().InsertMulti(ctx, gomock.Any()).Return(nil)
 		err := mockSession.InsertMulti(ctx, records)
+		assert.NoError(t, err)
+	})
+	// Cover varargs path (opts) for InsertMulti
+	var insOptMulti dal.InsertOption = nil
+	t.Run("insert multi with option", func(t *testing.T) {
+		records := []dal.Record{&mockRecord{}}
+		mockSession.EXPECT().InsertMulti(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		err := mockSession.InsertMulti(ctx, records, insOptMulti)
 		assert.NoError(t, err)
 	})
 
@@ -294,6 +309,13 @@ func TestMockWriteSession_Update(t *testing.T) {
 		err := mockSession.Update(ctx, key, updates)
 		assert.NoError(t, err)
 	})
+	// Cover varargs branch (preconditions)
+	var pre dal.Precondition = nil
+	t.Run("update with precondition", func(t *testing.T) {
+		mockSession.EXPECT().Update(ctx, key, updates, gomock.Any()).Return(nil)
+		err := mockSession.Update(ctx, key, updates, pre)
+		assert.NoError(t, err)
+	})
 
 	t.Run("update error", func(t *testing.T) {
 		expectedErr := errors.New("update error")
@@ -310,6 +332,14 @@ func TestMockWriteSession_Update(t *testing.T) {
 		err := mockSession.UpdateMulti(ctx, keys, updates)
 		assert.NoError(t, err)
 	})
+	// Cover varargs branch (preconditions) for UpdateMulti
+	var pre2 dal.Precondition = nil
+	t.Run("update multi with precondition", func(t *testing.T) {
+		keys := []*dal.Key{key}
+		mockSession.EXPECT().UpdateMulti(ctx, gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+		err := mockSession.UpdateMulti(ctx, keys, updates, pre2)
+		assert.NoError(t, err)
+	})
 
 	t.Run("update multi error", func(t *testing.T) {
 		keys := []*dal.Key{key}
@@ -324,6 +354,14 @@ func TestMockWriteSession_Update(t *testing.T) {
 		record := &mockRecord{}
 		mockSession.EXPECT().UpdateRecord(ctx, gomock.Any(), updates).Return(nil)
 		err := mockSession.UpdateRecord(ctx, record, updates)
+		assert.NoError(t, err)
+	})
+	// Cover varargs branch (preconditions) for UpdateRecord
+	var pre3 dal.Precondition = nil
+	t.Run("update record with precondition", func(t *testing.T) {
+		record := &mockRecord{}
+		mockSession.EXPECT().UpdateRecord(ctx, gomock.Any(), updates, gomock.Any()).Return(nil)
+		err := mockSession.UpdateRecord(ctx, record, updates, pre3)
 		assert.NoError(t, err)
 	})
 

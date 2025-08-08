@@ -42,6 +42,14 @@ func TestMockTransactionCoordinator_RunReadonlyTransaction(t *testing.T) {
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
 	})
+
+	// Cover varargs branch by passing a typed nil TransactionOption
+	var opt dal.TransactionOption = nil
+	t.Run("readonly transaction with option", func(t *testing.T) {
+		mockCoordinator.EXPECT().RunReadonlyTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		err := mockCoordinator.RunReadonlyTransaction(ctx, txFunc, opt)
+		assert.NoError(t, err)
+	})
 }
 
 func TestMockTransactionCoordinator_RunReadwriteTransaction(t *testing.T) {
@@ -66,6 +74,14 @@ func TestMockTransactionCoordinator_RunReadwriteTransaction(t *testing.T) {
 		err := mockCoordinator.RunReadwriteTransaction(ctx, txFunc)
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
+	})
+
+	// Cover varargs branch with option
+	var opt dal.TransactionOption = nil
+	t.Run("readwrite transaction with option", func(t *testing.T) {
+		mockCoordinator.EXPECT().RunReadwriteTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		err := mockCoordinator.RunReadwriteTransaction(ctx, txFunc, opt)
+		assert.NoError(t, err)
 	})
 }
 
@@ -101,6 +117,14 @@ func TestMockReadTransactionCoordinator_RunReadonlyTransaction(t *testing.T) {
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
 	})
+
+	// Cover varargs branch by passing option
+	var opt dal.TransactionOption = nil
+	t.Run("readonly transaction with option", func(t *testing.T) {
+		mockCoordinator.EXPECT().RunReadonlyTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		err := mockCoordinator.RunReadonlyTransaction(ctx, txFunc, opt)
+		assert.NoError(t, err)
+	})
 }
 
 func TestNewMockReadwriteTransactionCoordinator(t *testing.T) {
@@ -134,5 +158,13 @@ func TestMockReadwriteTransactionCoordinator_RunReadwriteTransaction(t *testing.
 		err := mockCoordinator.RunReadwriteTransaction(ctx, txFunc)
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
+	})
+
+	// Cover varargs branch by passing option
+	var opt dal.TransactionOption = nil
+	t.Run("readwrite transaction with option", func(t *testing.T) {
+		mockCoordinator.EXPECT().RunReadwriteTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		err := mockCoordinator.RunReadwriteTransaction(ctx, txFunc, opt)
+		assert.NoError(t, err)
 	})
 }

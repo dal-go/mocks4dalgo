@@ -12,6 +12,9 @@ func TestNewMockReader(t *testing.T) {
 
 	readerMock.EXPECT().Close().Return(nil).AnyTimes()
 
+	// Cover Cursor method as well
+	readerMock.EXPECT().Cursor().Return("", nil)
+
 	var i int
 
 	readerMock.EXPECT().Next().DoAndReturn(func() (dal.Record, error) {
@@ -21,6 +24,10 @@ func TestNewMockReader(t *testing.T) {
 	})
 
 	var reader dal.Reader = readerMock
+	// Call Cursor to cover it
+	if cursor, err := reader.Cursor(); err != nil || cursor != "" {
+		t.Errorf("reader.Cursor(): expected \"\", nil; got %q, %v", cursor, err)
+	}
 	record, err := reader.Next()
 	if err != nil {
 		t.Errorf("reader.Next(): expected err == nil, got %v", err)

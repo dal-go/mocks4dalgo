@@ -204,6 +204,14 @@ func TestMockDB_RunReadonlyTransaction(t *testing.T) {
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
 	})
+
+	// Also cover the varargs branch by passing a typed nil TransactionOption
+	var opt dal.TransactionOption = nil
+	t.Run("readonly transaction with option", func(t *testing.T) {
+		mockDB.EXPECT().RunReadonlyTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		err := mockDB.RunReadonlyTransaction(ctx, txFunc, opt)
+		assert.NoError(t, err)
+	})
 }
 
 func TestMockDB_RunReadwriteTransaction(t *testing.T) {
@@ -228,6 +236,14 @@ func TestMockDB_RunReadwriteTransaction(t *testing.T) {
 		err := mockDB.RunReadwriteTransaction(ctx, txFunc)
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
+	})
+
+	// Cover varargs branch as well
+	var opt dal.TransactionOption = nil
+	t.Run("readwrite transaction with option", func(t *testing.T) {
+		mockDB.EXPECT().RunReadwriteTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		err := mockDB.RunReadwriteTransaction(ctx, txFunc, opt)
+		assert.NoError(t, err)
 	})
 }
 

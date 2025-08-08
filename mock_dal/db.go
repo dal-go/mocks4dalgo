@@ -179,3 +179,17 @@ func (mr *MockDBMockRecorder) RunReadwriteTransaction(ctx, f any, options ...any
 	varargs := append([]any{ctx, f}, options...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RunReadwriteTransaction", reflect.TypeOf((*MockDB)(nil).RunReadwriteTransaction), varargs...)
 }
+
+// Schema mocks base method.
+func (m *MockDB) Schema() dal.Schema {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Schema")
+	ret0, _ := ret[0].(dal.Schema)
+	return ret0
+}
+
+// Schema indicates an expected call of Schema.
+func (mr *MockDBMockRecorder) Schema() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Schema", reflect.TypeOf((*MockDB)(nil).Schema))
+}
