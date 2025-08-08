@@ -189,3 +189,17 @@ func TestMockReadwriteTransactionCoordinator_RunReadwriteTransaction(t *testing.
 		assert.NoError(t, err)
 	})
 }
+
+func TestMockTransactionCoordinator_RunReadwriteTransaction_WithOptions(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockCoordinator := NewMockTransactionCoordinator(ctrl)
+	ctx := context.Background()
+	txFunc := func(context.Context, dal.ReadwriteTransaction) error { return nil }
+
+	mockCoordinator.EXPECT().RunReadwriteTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+	opts := []dal.TransactionOption{dal.TransactionOption(nil)}
+	err := mockCoordinator.RunReadwriteTransaction(ctx, txFunc, opts...)
+	assert.NoError(t, err)
+}

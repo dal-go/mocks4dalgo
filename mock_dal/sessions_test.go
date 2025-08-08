@@ -458,3 +458,73 @@ func TestMockReadwriteSession_Writes(t *testing.T) {
 		assert.NoError(t, s.UpdateRecord(ctx, NewMockRecord(ctrl), updates))
 	})
 }
+
+// Additional coverage for variadic arguments on write session methods
+func TestMockWriteSession_VariadicArgs(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	ws := NewMockWriteSession(ctrl)
+	ctx := context.Background()
+	key := &dal.Key{}
+	rec := NewMockRecord(ctrl)
+	updates := []update.Update{}
+
+	// Insert with one option
+	ws.EXPECT().Insert(ctx, gomock.Any(), gomock.Any()).Return(nil)
+	opt := dal.InsertOption(nil)
+	assert.NoError(t, ws.Insert(ctx, rec, opt))
+
+	// InsertMulti with one option
+	ws.EXPECT().InsertMulti(ctx, gomock.Any(), gomock.Any()).Return(nil)
+	records := []dal.Record{rec}
+	assert.NoError(t, ws.InsertMulti(ctx, records, opt))
+
+	// Update with one precondition
+	ws.EXPECT().Update(ctx, key, updates, gomock.Any()).Return(nil)
+	var pc dal.Precondition
+	assert.NoError(t, ws.Update(ctx, key, updates, pc))
+
+	// UpdateMulti with one precondition
+	ws.EXPECT().UpdateMulti(ctx, gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+	keys := []*dal.Key{key}
+	assert.NoError(t, ws.UpdateMulti(ctx, keys, updates, pc))
+
+	// UpdateRecord with one precondition
+	ws.EXPECT().UpdateRecord(ctx, gomock.Any(), updates, gomock.Any()).Return(nil)
+	assert.NoError(t, ws.UpdateRecord(ctx, rec, updates, pc))
+}
+
+// Additional coverage for variadic arguments on readwrite session methods
+func TestMockReadwriteSession_VariadicArgs(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	s := NewMockReadwriteSession(ctrl)
+	ctx := context.Background()
+	key := &dal.Key{}
+	rec := NewMockRecord(ctrl)
+	updates := []update.Update{}
+
+	// Insert with one option
+	s.EXPECT().Insert(ctx, gomock.Any(), gomock.Any()).Return(nil)
+	opt := dal.InsertOption(nil)
+	assert.NoError(t, s.Insert(ctx, rec, opt))
+
+	// InsertMulti with one option
+	s.EXPECT().InsertMulti(ctx, gomock.Any(), gomock.Any()).Return(nil)
+	records := []dal.Record{rec}
+	assert.NoError(t, s.InsertMulti(ctx, records, opt))
+
+	// Update with one precondition
+	s.EXPECT().Update(ctx, key, updates, gomock.Any()).Return(nil)
+	var pc dal.Precondition
+	assert.NoError(t, s.Update(ctx, key, updates, pc))
+
+	// UpdateMulti with one precondition
+	s.EXPECT().UpdateMulti(ctx, gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+	keys := []*dal.Key{key}
+	assert.NoError(t, s.UpdateMulti(ctx, keys, updates, pc))
+
+	// UpdateRecord with one precondition
+	s.EXPECT().UpdateRecord(ctx, gomock.Any(), updates, gomock.Any()).Return(nil)
+	assert.NoError(t, s.UpdateRecord(ctx, rec, updates, pc))
+}

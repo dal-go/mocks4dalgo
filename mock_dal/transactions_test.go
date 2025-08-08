@@ -545,3 +545,38 @@ func TestMockReadwriteTransaction_Options(t *testing.T) {
 	options := mockTx.Options()
 	assert.Nil(t, options)
 }
+
+// Additional coverage for variadic arguments on readwrite transaction methods
+func TestMockReadwriteTransaction_VariadicArgs(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	tx := NewMockReadwriteTransaction(ctrl)
+	ctx := context.Background()
+	key := &dal.Key{}
+	rec := NewMockRecord(ctrl)
+	updates := []update.Update{}
+
+	// Insert with one option
+	tx.EXPECT().Insert(ctx, gomock.Any(), gomock.Any()).Return(nil)
+	opt := dal.InsertOption(nil)
+	assert.NoError(t, tx.Insert(ctx, rec, opt))
+
+	// InsertMulti with one option
+	tx.EXPECT().InsertMulti(ctx, gomock.Any(), gomock.Any()).Return(nil)
+	records := []dal.Record{rec}
+	assert.NoError(t, tx.InsertMulti(ctx, records, opt))
+
+	// Update with one precondition
+	tx.EXPECT().Update(ctx, key, updates, gomock.Any()).Return(nil)
+	var pc dal.Precondition
+	assert.NoError(t, tx.Update(ctx, key, updates, pc))
+
+	// UpdateMulti with one precondition
+	tx.EXPECT().UpdateMulti(ctx, gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+	keys := []*dal.Key{key}
+	assert.NoError(t, tx.UpdateMulti(ctx, keys, updates, pc))
+
+	// UpdateRecord with one precondition
+	tx.EXPECT().UpdateRecord(ctx, gomock.Any(), updates, gomock.Any()).Return(nil)
+	assert.NoError(t, tx.UpdateRecord(ctx, rec, updates, pc))
+}
