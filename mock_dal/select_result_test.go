@@ -7,6 +7,7 @@ import (
 	"go.uber.org/mock/gomock"
 	"reflect"
 	"testing"
+	"time"
 )
 
 func TestNewRecordsReader(t *testing.T) {
@@ -94,5 +95,14 @@ func TestRecordReader_Methods(t *testing.T) {
 		assert.Nil(t, result)
 		assert.Error(t, err)
 		assert.Contains(t, err.Error(), "reader is closed")
+	})
+
+	t.Run("next_with_delay", func(t *testing.T) {
+		record := dal.NewRecord(dal.NewKeyWithID("test", "id-delayed"))
+		reader := NewRecordsReader(1*time.Millisecond, record)
+
+		result, err := reader.Next()
+		assert.Equal(t, record, result)
+		assert.NoError(t, err)
 	})
 }

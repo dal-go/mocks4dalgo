@@ -89,7 +89,7 @@ func TestMockDB_Get(t *testing.T) {
 	t.Run("get success", func(t *testing.T) {
 		mockDB.EXPECT().Get(ctx, gomock.Any()).Return(nil)
 
-		err := mockDB.Get(ctx, &mockRecord{})
+		err := mockDB.Get(ctx, NewMockRecord(ctrl))
 		assert.NoError(t, err)
 	})
 
@@ -97,7 +97,7 @@ func TestMockDB_Get(t *testing.T) {
 		expectedErr := errors.New("get error")
 		mockDB.EXPECT().Get(ctx, gomock.Any()).Return(expectedErr)
 
-		err := mockDB.Get(ctx, &mockRecord{})
+		err := mockDB.Get(ctx, NewMockRecord(ctrl))
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
 	})
@@ -109,7 +109,7 @@ func TestMockDB_GetMulti(t *testing.T) {
 
 	mockDB := NewMockDB(ctrl)
 	ctx := context.Background()
-	records := []dal.Record{&mockRecord{}, &mockRecord{}}
+	records := []dal.Record{NewMockRecord(ctrl), NewMockRecord(ctrl)}
 
 	t.Run("get multi success", func(t *testing.T) {
 		mockDB.EXPECT().GetMulti(ctx, gomock.Any()).Return(nil)
@@ -136,7 +136,7 @@ func TestMockDB_QueryAllRecords(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("query all records success", func(t *testing.T) {
-		expectedRecords := []dal.Record{&mockRecord{}}
+		expectedRecords := []dal.Record{NewMockRecord(ctrl)}
 		mockDB.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
 
 		records, err := mockDB.QueryAllRecords(ctx, nil)
@@ -196,6 +196,13 @@ func TestMockDB_RunReadonlyTransaction(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
+	t.Run("readonly transaction with options", func(t *testing.T) {
+		mockDB.EXPECT().RunReadonlyTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		opts := []dal.TransactionOption{dal.TransactionOption(nil)}
+		err := mockDB.RunReadonlyTransaction(ctx, txFunc, opts...)
+		assert.NoError(t, err)
+	})
+
 	t.Run("readonly transaction error", func(t *testing.T) {
 		expectedErr := errors.New("transaction error")
 		mockDB.EXPECT().RunReadonlyTransaction(ctx, gomock.Any()).Return(expectedErr)
@@ -229,6 +236,13 @@ func TestMockDB_RunReadwriteTransaction(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
+	t.Run("readwrite transaction with options", func(t *testing.T) {
+		mockDB.EXPECT().RunReadwriteTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		opts := []dal.TransactionOption{dal.TransactionOption(nil)}
+		err := mockDB.RunReadwriteTransaction(ctx, txFunc, opts...)
+		assert.NoError(t, err)
+	})
+
 	t.Run("readwrite transaction error", func(t *testing.T) {
 		expectedErr := errors.New("transaction error")
 		mockDB.EXPECT().RunReadwriteTransaction(ctx, gomock.Any()).Return(expectedErr)
@@ -246,14 +260,3 @@ func TestMockDB_RunReadwriteTransaction(t *testing.T) {
 		assert.NoError(t, err)
 	})
 }
-
-// Mock types for testing
-type mockRecord struct{}
-
-func (m *mockRecord) Key() *dal.Key                 { return &dal.Key{} }
-func (m *mockRecord) Data() any                     { return nil }
-func (m *mockRecord) SetError(err error) dal.Record { return m }
-func (m *mockRecord) Error() error                  { return nil }
-func (m *mockRecord) Exists() bool                  { return false }
-func (m *mockRecord) HasChanged() bool              { return false }
-func (m *mockRecord) MarkAsChanged()                {}

@@ -78,7 +78,7 @@ func TestMockReadTransaction_Get(t *testing.T) {
 	t.Run("get success", func(t *testing.T) {
 		mockTx.EXPECT().Get(ctx, gomock.Any()).Return(nil)
 
-		err := mockTx.Get(ctx, &mockRecord{})
+		err := mockTx.Get(ctx, NewMockRecord(ctrl))
 		assert.NoError(t, err)
 	})
 
@@ -86,7 +86,7 @@ func TestMockReadTransaction_Get(t *testing.T) {
 		expectedErr := errors.New("get error")
 		mockTx.EXPECT().Get(ctx, gomock.Any()).Return(expectedErr)
 
-		err := mockTx.Get(ctx, &mockRecord{})
+		err := mockTx.Get(ctx, NewMockRecord(ctrl))
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
 	})
@@ -110,7 +110,8 @@ func TestMockReadTransaction_GetMulti(t *testing.T) {
 
 	mockTx := NewMockReadTransaction(ctrl)
 	ctx := context.Background()
-	records := []dal.Record{&mockRecord{}, &mockRecord{}}
+
+	records := []dal.Record{NewMockRecord(ctrl), NewMockRecord(ctrl)}
 
 	t.Run("get multi success", func(t *testing.T) {
 		mockTx.EXPECT().GetMulti(ctx, gomock.Any()).Return(nil)
@@ -135,7 +136,7 @@ func TestMockReadTransaction_QueryMethods(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("QueryAllRecords success", func(t *testing.T) {
-		expectedRecords := []dal.Record{&mockRecord{}}
+		expectedRecords := []dal.Record{NewMockRecord(ctrl)}
 		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
 		records, err := mockTx.QueryAllRecords(ctx, nil)
 		assert.NoError(t, err)
@@ -255,24 +256,48 @@ func TestMockReadwriteTransaction_ID(t *testing.T) {
 	assert.Equal(t, expectedID, id)
 }
 
+func TestMockReadwriteTransaction_Exists(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+	ctx := context.Background()
+	key := &dal.Key{}
+
+	t.Run("exists returns true", func(t *testing.T) {
+		mockTx.EXPECT().Exists(ctx, key).Return(true, nil)
+		exists, err := mockTx.Exists(ctx, key)
+		assert.True(t, exists)
+		assert.NoError(t, err)
+	})
+
+	t.Run("exists returns error", func(t *testing.T) {
+		expectedErr := errors.New("exists error")
+		mockTx.EXPECT().Exists(ctx, key).Return(false, expectedErr)
+		exists, err := mockTx.Exists(ctx, key)
+		assert.False(t, exists)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
 func TestMockReadwriteTransaction_GetAndGetMulti(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	mockTx := NewMockReadwriteTransaction(ctrl)
 	ctx := context.Background()
-	records := []dal.Record{&mockRecord{}}
+	records := []dal.Record{NewMockRecord(ctrl)}
 
 	t.Run("get success", func(t *testing.T) {
 		mockTx.EXPECT().Get(ctx, gomock.Any()).Return(nil)
-		err := mockTx.Get(ctx, &mockRecord{})
+		err := mockTx.Get(ctx, NewMockRecord(ctrl))
 		assert.NoError(t, err)
 	})
 
 	t.Run("get error", func(t *testing.T) {
 		expectedErr := errors.New("get error")
 		mockTx.EXPECT().Get(ctx, gomock.Any()).Return(expectedErr)
-		err := mockTx.Get(ctx, &mockRecord{})
+		err := mockTx.Get(ctx, NewMockRecord(ctrl))
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
 	})
@@ -302,7 +327,7 @@ func TestMockReadwriteTransaction_Insert(t *testing.T) {
 	t.Run("insert success", func(t *testing.T) {
 		mockTx.EXPECT().Insert(ctx, gomock.Any()).Return(nil)
 
-		err := mockTx.Insert(ctx, &mockRecord{})
+		err := mockTx.Insert(ctx, NewMockRecord(ctrl))
 		assert.NoError(t, err)
 	})
 	// Cover varargs branch (opts)
@@ -317,13 +342,13 @@ func TestMockReadwriteTransaction_Insert(t *testing.T) {
 		expectedErr := errors.New("insert error")
 		mockTx.EXPECT().Insert(ctx, gomock.Any()).Return(expectedErr)
 
-		err := mockTx.Insert(ctx, &mockRecord{})
+		err := mockTx.Insert(ctx, NewMockRecord(ctrl))
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
 	})
 
 	t.Run("insert multi success", func(t *testing.T) {
-		records := []dal.Record{&mockRecord{}}
+		records := []dal.Record{NewMockRecord(ctrl)}
 		mockTx.EXPECT().InsertMulti(ctx, gomock.Any()).Return(nil)
 		err := mockTx.InsertMulti(ctx, records)
 		assert.NoError(t, err)
@@ -338,7 +363,7 @@ func TestMockReadwriteTransaction_Insert(t *testing.T) {
 	})
 
 	t.Run("insert multi error", func(t *testing.T) {
-		records := []dal.Record{&mockRecord{}}
+		records := []dal.Record{NewMockRecord(ctrl)}
 		expectedErr := errors.New("insert multi error")
 		mockTx.EXPECT().InsertMulti(ctx, gomock.Any()).Return(expectedErr)
 		err := mockTx.InsertMulti(ctx, records)
@@ -355,7 +380,7 @@ func TestMockReadwriteTransaction_QueryMethods(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("QueryAllRecords success", func(t *testing.T) {
-		expectedRecords := []dal.Record{&mockRecord{}}
+		expectedRecords := []dal.Record{NewMockRecord(ctrl)}
 		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
 		records, err := mockTx.QueryAllRecords(ctx, nil)
 		assert.NoError(t, err)
@@ -398,7 +423,7 @@ func TestMockReadwriteTransaction_Set(t *testing.T) {
 	t.Run("set success", func(t *testing.T) {
 		mockTx.EXPECT().Set(ctx, gomock.Any()).Return(nil)
 
-		err := mockTx.Set(ctx, &mockRecord{})
+		err := mockTx.Set(ctx, NewMockRecord(ctrl))
 		assert.NoError(t, err)
 	})
 
@@ -406,20 +431,20 @@ func TestMockReadwriteTransaction_Set(t *testing.T) {
 		expectedErr := errors.New("set error")
 		mockTx.EXPECT().Set(ctx, gomock.Any()).Return(expectedErr)
 
-		err := mockTx.Set(ctx, &mockRecord{})
+		err := mockTx.Set(ctx, NewMockRecord(ctrl))
 		assert.Error(t, err)
 		assert.Equal(t, expectedErr, err)
 	})
 
 	t.Run("set multi success", func(t *testing.T) {
-		records := []dal.Record{&mockRecord{}}
+		records := []dal.Record{NewMockRecord(ctrl)}
 		mockTx.EXPECT().SetMulti(ctx, gomock.Any()).Return(nil)
 		err := mockTx.SetMulti(ctx, records)
 		assert.NoError(t, err)
 	})
 
 	t.Run("set multi error", func(t *testing.T) {
-		records := []dal.Record{&mockRecord{}}
+		records := []dal.Record{NewMockRecord(ctrl)}
 		expectedErr := errors.New("set multi error")
 		mockTx.EXPECT().SetMulti(ctx, gomock.Any()).Return(expectedErr)
 		err := mockTx.SetMulti(ctx, records)
@@ -461,7 +486,7 @@ func TestMockReadwriteTransaction_Update(t *testing.T) {
 	})
 
 	t.Run("update multi success", func(t *testing.T) {
-		keys := []*dal.Key{&dal.Key{}}
+		keys := []*dal.Key{{}}
 		mockTx.EXPECT().UpdateMulti(ctx, gomock.Any(), gomock.Any()).Return(nil)
 		err := mockTx.UpdateMulti(ctx, keys, updates)
 		assert.NoError(t, err)
@@ -476,7 +501,7 @@ func TestMockReadwriteTransaction_Update(t *testing.T) {
 	})
 
 	t.Run("update multi error", func(t *testing.T) {
-		keys := []*dal.Key{&dal.Key{}}
+		keys := []*dal.Key{{}}
 		expectedErr := errors.New("update multi error")
 		mockTx.EXPECT().UpdateMulti(ctx, gomock.Any(), gomock.Any()).Return(expectedErr)
 		err := mockTx.UpdateMulti(ctx, keys, updates)
@@ -485,7 +510,7 @@ func TestMockReadwriteTransaction_Update(t *testing.T) {
 	})
 
 	t.Run("update record success", func(t *testing.T) {
-		record := &mockRecord{}
+		record := NewMockRecord(ctrl)
 		mockTx.EXPECT().UpdateRecord(ctx, gomock.Any(), updates).Return(nil)
 		err := mockTx.UpdateRecord(ctx, record, updates)
 		assert.NoError(t, err)
@@ -500,7 +525,7 @@ func TestMockReadwriteTransaction_Update(t *testing.T) {
 	})
 
 	t.Run("update record error", func(t *testing.T) {
-		record := &mockRecord{}
+		record := NewMockRecord(ctrl)
 		expectedErr := errors.New("update record error")
 		mockTx.EXPECT().UpdateRecord(ctx, gomock.Any(), updates).Return(expectedErr)
 		err := mockTx.UpdateRecord(ctx, record, updates)

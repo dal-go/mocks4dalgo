@@ -42,3 +42,19 @@ func TestNewMockReader(t *testing.T) {
 		t.Fatalf("failed to close mock reader: %v", err)
 	}
 }
+
+func TestMockReader_Cursor(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	readerMock := NewMockReader(ctrl)
+	readerMock.EXPECT().Cursor().Return("cursor-token", nil)
+
+	cursor, err := readerMock.Cursor()
+	if err != nil {
+		t.Fatalf("expected no error from Cursor, got: %v", err)
+	}
+	if cursor != "cursor-token" {
+		t.Fatalf("expected cursor-token, got: %s", cursor)
+	}
+}

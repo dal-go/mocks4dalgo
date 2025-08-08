@@ -34,6 +34,13 @@ func TestMockTransactionCoordinator_RunReadonlyTransaction(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
+	t.Run("readonly transaction with options", func(t *testing.T) {
+		mockCoordinator.EXPECT().RunReadonlyTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		opts := []dal.TransactionOption{dal.TransactionOption(nil)}
+		err := mockCoordinator.RunReadonlyTransaction(ctx, txFunc, opts...)
+		assert.NoError(t, err)
+	})
+
 	t.Run("readonly transaction error", func(t *testing.T) {
 		expectedErr := errors.New("transaction error")
 		mockCoordinator.EXPECT().RunReadonlyTransaction(ctx, gomock.Any()).Return(expectedErr)
@@ -109,6 +116,13 @@ func TestMockReadTransactionCoordinator_RunReadonlyTransaction(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
+	t.Run("readonly transaction with options", func(t *testing.T) {
+		mockCoordinator.EXPECT().RunReadonlyTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		opts := []dal.TransactionOption{dal.TransactionOption(nil)}
+		err := mockCoordinator.RunReadonlyTransaction(ctx, txFunc, opts...)
+		assert.NoError(t, err)
+	})
+
 	t.Run("readonly transaction error", func(t *testing.T) {
 		expectedErr := errors.New("transaction error")
 		mockCoordinator.EXPECT().RunReadonlyTransaction(ctx, gomock.Any()).Return(expectedErr)
@@ -148,6 +162,13 @@ func TestMockReadwriteTransactionCoordinator_RunReadwriteTransaction(t *testing.
 		mockCoordinator.EXPECT().RunReadwriteTransaction(ctx, gomock.Any()).Return(nil)
 
 		err := mockCoordinator.RunReadwriteTransaction(ctx, txFunc)
+		assert.NoError(t, err)
+	})
+
+	t.Run("readwrite transaction with options", func(t *testing.T) {
+		mockCoordinator.EXPECT().RunReadwriteTransaction(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		opts := []dal.TransactionOption{dal.TransactionOption(nil)}
+		err := mockCoordinator.RunReadwriteTransaction(ctx, txFunc, opts...)
 		assert.NoError(t, err)
 	})
 
