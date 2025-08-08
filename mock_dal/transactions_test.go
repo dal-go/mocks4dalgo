@@ -1,0 +1,460 @@
+package mock_dal
+
+import (
+	"context"
+	"errors"
+	"testing"
+
+	"github.com/dal-go/dalgo/dal"
+	"github.com/dal-go/dalgo/update"
+	"github.com/stretchr/testify/assert"
+	"go.uber.org/mock/gomock"
+)
+
+func TestNewMockTransaction(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockTransaction(ctrl)
+	assert.NotNil(t, mockTx)
+	assert.NotNil(t, mockTx.EXPECT())
+}
+
+func TestMockTransaction_Options(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockTransaction(ctrl)
+
+	mockTx.EXPECT().Options().Return(nil)
+
+	options := mockTx.Options()
+	assert.Nil(t, options)
+}
+
+func TestNewMockReadTransaction(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadTransaction(ctrl)
+	assert.NotNil(t, mockTx)
+	assert.NotNil(t, mockTx.EXPECT())
+}
+
+func TestMockReadTransaction_Exists(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadTransaction(ctrl)
+	ctx := context.Background()
+	key := &dal.Key{}
+
+	t.Run("exists returns true", func(t *testing.T) {
+		mockTx.EXPECT().Exists(ctx, key).Return(true, nil)
+
+		exists, err := mockTx.Exists(ctx, key)
+		assert.True(t, exists)
+		assert.NoError(t, err)
+	})
+
+	t.Run("exists returns error", func(t *testing.T) {
+		expectedErr := errors.New("exists error")
+		mockTx.EXPECT().Exists(ctx, key).Return(false, expectedErr)
+
+		exists, err := mockTx.Exists(ctx, key)
+		assert.False(t, exists)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestMockReadTransaction_Get(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadTransaction(ctrl)
+	ctx := context.Background()
+
+	t.Run("get success", func(t *testing.T) {
+		mockTx.EXPECT().Get(ctx, gomock.Any()).Return(nil)
+
+		err := mockTx.Get(ctx, &mockRecord{})
+		assert.NoError(t, err)
+	})
+
+	t.Run("get error", func(t *testing.T) {
+		expectedErr := errors.New("get error")
+		mockTx.EXPECT().Get(ctx, gomock.Any()).Return(expectedErr)
+
+		err := mockTx.Get(ctx, &mockRecord{})
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestMockReadTransaction_Options(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadTransaction(ctrl)
+
+	mockTx.EXPECT().Options().Return(nil)
+
+	options := mockTx.Options()
+	assert.Nil(t, options)
+}
+
+func TestMockReadTransaction_GetMulti(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadTransaction(ctrl)
+	ctx := context.Background()
+	records := []dal.Record{&mockRecord{}, &mockRecord{}}
+
+	t.Run("get multi success", func(t *testing.T) {
+		mockTx.EXPECT().GetMulti(ctx, gomock.Any()).Return(nil)
+		err := mockTx.GetMulti(ctx, records)
+		assert.NoError(t, err)
+	})
+
+	t.Run("get multi error", func(t *testing.T) {
+		expectedErr := errors.New("get multi error")
+		mockTx.EXPECT().GetMulti(ctx, gomock.Any()).Return(expectedErr)
+		err := mockTx.GetMulti(ctx, records)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestMockReadTransaction_QueryMethods(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadTransaction(ctrl)
+	ctx := context.Background()
+
+	t.Run("QueryAllRecords success", func(t *testing.T) {
+		expectedRecords := []dal.Record{&mockRecord{}}
+		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
+		records, err := mockTx.QueryAllRecords(ctx, nil)
+		assert.NoError(t, err)
+		assert.Equal(t, expectedRecords, records)
+	})
+
+	t.Run("QueryAllRecords error", func(t *testing.T) {
+		expectedErr := errors.New("query all error")
+		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
+		records, err := mockTx.QueryAllRecords(ctx, nil)
+		assert.Error(t, err)
+		assert.Nil(t, records)
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("QueryReader success", func(t *testing.T) {
+		mockTx.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, nil)
+		reader, err := mockTx.QueryReader(ctx, nil)
+		assert.NoError(t, err)
+		assert.Nil(t, reader)
+	})
+
+	t.Run("QueryReader error", func(t *testing.T) {
+		expectedErr := errors.New("query reader error")
+		mockTx.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, expectedErr)
+		reader, err := mockTx.QueryReader(ctx, nil)
+		assert.Error(t, err)
+		assert.Nil(t, reader)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestNewMockReadwriteTransaction(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+	assert.NotNil(t, mockTx)
+	assert.NotNil(t, mockTx.EXPECT())
+}
+
+func TestMockReadwriteTransaction_Delete(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+	ctx := context.Background()
+	key := &dal.Key{}
+
+	t.Run("delete success", func(t *testing.T) {
+		mockTx.EXPECT().Delete(ctx, key).Return(nil)
+
+		err := mockTx.Delete(ctx, key)
+		assert.NoError(t, err)
+	})
+
+	t.Run("delete error", func(t *testing.T) {
+		expectedErr := errors.New("delete error")
+		mockTx.EXPECT().Delete(ctx, key).Return(expectedErr)
+
+		err := mockTx.Delete(ctx, key)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("delete multi success", func(t *testing.T) {
+		keys := []*dal.Key{key}
+		mockTx.EXPECT().DeleteMulti(ctx, gomock.Any()).Return(nil)
+		err := mockTx.DeleteMulti(ctx, keys)
+		assert.NoError(t, err)
+	})
+
+	t.Run("delete multi error", func(t *testing.T) {
+		keys := []*dal.Key{key}
+		expectedErr := errors.New("delete multi error")
+		mockTx.EXPECT().DeleteMulti(ctx, gomock.Any()).Return(expectedErr)
+		err := mockTx.DeleteMulti(ctx, keys)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestMockReadwriteTransaction_ID(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+	expectedID := "test-tx-id"
+
+	mockTx.EXPECT().ID().Return(expectedID)
+
+	id := mockTx.ID()
+	assert.Equal(t, expectedID, id)
+}
+
+func TestMockReadwriteTransaction_GetAndGetMulti(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+	ctx := context.Background()
+	records := []dal.Record{&mockRecord{}}
+
+	t.Run("get success", func(t *testing.T) {
+		mockTx.EXPECT().Get(ctx, gomock.Any()).Return(nil)
+		err := mockTx.Get(ctx, &mockRecord{})
+		assert.NoError(t, err)
+	})
+
+	t.Run("get error", func(t *testing.T) {
+		expectedErr := errors.New("get error")
+		mockTx.EXPECT().Get(ctx, gomock.Any()).Return(expectedErr)
+		err := mockTx.Get(ctx, &mockRecord{})
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("get multi success", func(t *testing.T) {
+		mockTx.EXPECT().GetMulti(ctx, gomock.Any()).Return(nil)
+		err := mockTx.GetMulti(ctx, records)
+		assert.NoError(t, err)
+	})
+
+	t.Run("get multi error", func(t *testing.T) {
+		expectedErr := errors.New("get multi error")
+		mockTx.EXPECT().GetMulti(ctx, gomock.Any()).Return(expectedErr)
+		err := mockTx.GetMulti(ctx, records)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestMockReadwriteTransaction_Insert(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+	ctx := context.Background()
+
+	t.Run("insert success", func(t *testing.T) {
+		mockTx.EXPECT().Insert(ctx, gomock.Any()).Return(nil)
+
+		err := mockTx.Insert(ctx, &mockRecord{})
+		assert.NoError(t, err)
+	})
+
+	t.Run("insert error", func(t *testing.T) {
+		expectedErr := errors.New("insert error")
+		mockTx.EXPECT().Insert(ctx, gomock.Any()).Return(expectedErr)
+
+		err := mockTx.Insert(ctx, &mockRecord{})
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("insert multi success", func(t *testing.T) {
+		records := []dal.Record{&mockRecord{}}
+		mockTx.EXPECT().InsertMulti(ctx, gomock.Any()).Return(nil)
+		err := mockTx.InsertMulti(ctx, records)
+		assert.NoError(t, err)
+	})
+
+	t.Run("insert multi error", func(t *testing.T) {
+		records := []dal.Record{&mockRecord{}}
+		expectedErr := errors.New("insert multi error")
+		mockTx.EXPECT().InsertMulti(ctx, gomock.Any()).Return(expectedErr)
+		err := mockTx.InsertMulti(ctx, records)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestMockReadwriteTransaction_QueryMethods(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+	ctx := context.Background()
+
+	t.Run("QueryAllRecords success", func(t *testing.T) {
+		expectedRecords := []dal.Record{&mockRecord{}}
+		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
+		records, err := mockTx.QueryAllRecords(ctx, nil)
+		assert.NoError(t, err)
+		assert.Equal(t, expectedRecords, records)
+	})
+
+	t.Run("QueryAllRecords error", func(t *testing.T) {
+		expectedErr := errors.New("query all error")
+		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
+		records, err := mockTx.QueryAllRecords(ctx, nil)
+		assert.Error(t, err)
+		assert.Nil(t, records)
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("QueryReader success", func(t *testing.T) {
+		mockTx.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, nil)
+		reader, err := mockTx.QueryReader(ctx, nil)
+		assert.NoError(t, err)
+		assert.Nil(t, reader)
+	})
+
+	t.Run("QueryReader error", func(t *testing.T) {
+		expectedErr := errors.New("query reader error")
+		mockTx.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, expectedErr)
+		reader, err := mockTx.QueryReader(ctx, nil)
+		assert.Error(t, err)
+		assert.Nil(t, reader)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestMockReadwriteTransaction_Set(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+	ctx := context.Background()
+
+	t.Run("set success", func(t *testing.T) {
+		mockTx.EXPECT().Set(ctx, gomock.Any()).Return(nil)
+
+		err := mockTx.Set(ctx, &mockRecord{})
+		assert.NoError(t, err)
+	})
+
+	t.Run("set error", func(t *testing.T) {
+		expectedErr := errors.New("set error")
+		mockTx.EXPECT().Set(ctx, gomock.Any()).Return(expectedErr)
+
+		err := mockTx.Set(ctx, &mockRecord{})
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("set multi success", func(t *testing.T) {
+		records := []dal.Record{&mockRecord{}}
+		mockTx.EXPECT().SetMulti(ctx, gomock.Any()).Return(nil)
+		err := mockTx.SetMulti(ctx, records)
+		assert.NoError(t, err)
+	})
+
+	t.Run("set multi error", func(t *testing.T) {
+		records := []dal.Record{&mockRecord{}}
+		expectedErr := errors.New("set multi error")
+		mockTx.EXPECT().SetMulti(ctx, gomock.Any()).Return(expectedErr)
+		err := mockTx.SetMulti(ctx, records)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestMockReadwriteTransaction_Update(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+	ctx := context.Background()
+	key := &dal.Key{}
+	updates := []update.Update{}
+
+	t.Run("update success", func(t *testing.T) {
+		mockTx.EXPECT().Update(ctx, key, updates).Return(nil)
+
+		err := mockTx.Update(ctx, key, updates)
+		assert.NoError(t, err)
+	})
+
+	t.Run("update error", func(t *testing.T) {
+		expectedErr := errors.New("update error")
+		mockTx.EXPECT().Update(ctx, key, updates).Return(expectedErr)
+
+		err := mockTx.Update(ctx, key, updates)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("update multi success", func(t *testing.T) {
+		keys := []*dal.Key{&dal.Key{}}
+		mockTx.EXPECT().UpdateMulti(ctx, gomock.Any(), gomock.Any()).Return(nil)
+		err := mockTx.UpdateMulti(ctx, keys, updates)
+		assert.NoError(t, err)
+	})
+
+	t.Run("update multi error", func(t *testing.T) {
+		keys := []*dal.Key{&dal.Key{}}
+		expectedErr := errors.New("update multi error")
+		mockTx.EXPECT().UpdateMulti(ctx, gomock.Any(), gomock.Any()).Return(expectedErr)
+		err := mockTx.UpdateMulti(ctx, keys, updates)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+
+	t.Run("update record success", func(t *testing.T) {
+		record := &mockRecord{}
+		mockTx.EXPECT().UpdateRecord(ctx, gomock.Any(), updates).Return(nil)
+		err := mockTx.UpdateRecord(ctx, record, updates)
+		assert.NoError(t, err)
+	})
+
+	t.Run("update record error", func(t *testing.T) {
+		record := &mockRecord{}
+		expectedErr := errors.New("update record error")
+		mockTx.EXPECT().UpdateRecord(ctx, gomock.Any(), updates).Return(expectedErr)
+		err := mockTx.UpdateRecord(ctx, record, updates)
+		assert.Error(t, err)
+		assert.Equal(t, expectedErr, err)
+	})
+}
+
+func TestMockReadwriteTransaction_Options(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	mockTx := NewMockReadwriteTransaction(ctrl)
+
+	mockTx.EXPECT().Options().Return(nil)
+
+	options := mockTx.Options()
+	assert.Nil(t, options)
+}
