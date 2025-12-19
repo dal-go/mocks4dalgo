@@ -96,7 +96,7 @@ func TestMockReadSession_GetMulti(t *testing.T) {
 	})
 }
 
-func TestMockReadSession_QueryAllRecords(t *testing.T) {
+func TestMockReadSession_ReadAllRecords(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
@@ -105,18 +105,18 @@ func TestMockReadSession_QueryAllRecords(t *testing.T) {
 
 	t.Run("query all records success", func(t *testing.T) {
 		expectedRecords := []dal.Record{NewMockRecord(ctrl)}
-		mockSession.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
+		mockSession.EXPECT().ReadAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
 
-		records, err := mockSession.QueryAllRecords(ctx, nil)
+		records, err := mockSession.ReadAllRecords(ctx, nil)
 		assert.NoError(t, err)
 		assert.Equal(t, expectedRecords, records)
 	})
 
 	t.Run("query all records error", func(t *testing.T) {
 		expectedErr := errors.New("query error")
-		mockSession.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
+		mockSession.EXPECT().ReadAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
 
-		records, err := mockSession.QueryAllRecords(ctx, nil)
+		records, err := mockSession.ReadAllRecords(ctx, nil)
 		assert.Error(t, err)
 		assert.Nil(t, records)
 		assert.Equal(t, expectedErr, err)
@@ -131,18 +131,18 @@ func TestMockReadSession_QueryReader(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("query reader success", func(t *testing.T) {
-		mockSession.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, nil)
+		mockSession.EXPECT().GetReader(ctx, gomock.Any()).Return(nil, nil)
 
-		reader, err := mockSession.QueryReader(ctx, nil)
+		reader, err := mockSession.GetReader(ctx, nil)
 		assert.NoError(t, err)
 		assert.Nil(t, reader)
 	})
 
 	t.Run("query reader error", func(t *testing.T) {
 		expectedErr := errors.New("query reader error")
-		mockSession.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, expectedErr)
+		mockSession.EXPECT().GetReader(ctx, gomock.Any()).Return(nil, expectedErr)
 
-		reader, err := mockSession.QueryReader(ctx, nil)
+		reader, err := mockSession.GetReader(ctx, nil)
 		assert.Error(t, err)
 		assert.Nil(t, reader)
 		assert.Equal(t, expectedErr, err)
@@ -394,16 +394,16 @@ func TestMockReadwriteSession_ReadQuery(t *testing.T) {
 
 	t.Run("query all success", func(t *testing.T) {
 		expected := []dal.Record{NewMockRecord(ctrl)}
-		s.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expected, nil)
-		records, err := s.QueryAllRecords(ctx, nil)
+		s.EXPECT().ReadAllRecords(ctx, gomock.Any()).Return(expected, nil)
+		records, err := s.ReadAllRecords(ctx, nil)
 		assert.NoError(t, err)
 		assert.Equal(t, expected, records)
 	})
 
 	t.Run("query reader error", func(t *testing.T) {
 		expectedErr := errors.New("reader error")
-		s.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, expectedErr)
-		reader, err := s.QueryReader(ctx, nil)
+		s.EXPECT().GetReader(ctx, gomock.Any()).Return(nil, expectedErr)
+		reader, err := s.GetReader(ctx, nil)
 		assert.Error(t, err)
 		assert.Nil(t, reader)
 		assert.Equal(t, expectedErr, err)

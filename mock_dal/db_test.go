@@ -128,27 +128,27 @@ func TestMockDB_GetMulti(t *testing.T) {
 	})
 }
 
-func TestMockDB_QueryAllRecords(t *testing.T) {
+func TestMockDB_ReadAllRecords(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
 	mockDB := NewMockDB(ctrl)
 	ctx := context.Background()
 
-	t.Run("query all records success", func(t *testing.T) {
+	t.Run("read all records success", func(t *testing.T) {
 		expectedRecords := []dal.Record{NewMockRecord(ctrl)}
-		mockDB.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
+		mockDB.EXPECT().ReadAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
 
-		records, err := mockDB.QueryAllRecords(ctx, nil)
+		records, err := mockDB.ReadAllRecords(ctx, nil)
 		assert.NoError(t, err)
 		assert.Equal(t, expectedRecords, records)
 	})
 
-	t.Run("query all records error", func(t *testing.T) {
+	t.Run("read all records error", func(t *testing.T) {
 		expectedErr := errors.New("query error")
-		mockDB.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
+		mockDB.EXPECT().ReadAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
 
-		records, err := mockDB.QueryAllRecords(ctx, nil)
+		records, err := mockDB.ReadAllRecords(ctx, nil)
 		assert.Error(t, err)
 		assert.Nil(t, records)
 		assert.Equal(t, expectedErr, err)
@@ -163,18 +163,18 @@ func TestMockDB_QueryReader(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("query reader success", func(t *testing.T) {
-		mockDB.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, nil)
+		mockDB.EXPECT().GetReader(ctx, gomock.Any()).Return(nil, nil)
 
-		reader, err := mockDB.QueryReader(ctx, nil)
+		reader, err := mockDB.GetReader(ctx, nil)
 		assert.NoError(t, err)
 		assert.Nil(t, reader)
 	})
 
 	t.Run("query reader error", func(t *testing.T) {
 		expectedErr := errors.New("query reader error")
-		mockDB.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, expectedErr)
+		mockDB.EXPECT().GetReader(ctx, gomock.Any()).Return(nil, expectedErr)
 
-		reader, err := mockDB.QueryReader(ctx, nil)
+		reader, err := mockDB.GetReader(ctx, nil)
 		assert.Error(t, err)
 		assert.Nil(t, reader)
 		assert.Equal(t, expectedErr, err)

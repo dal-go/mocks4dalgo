@@ -98,6 +98,21 @@ func (mr *MockDBMockRecorder) GetMulti(ctx, records any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMulti", reflect.TypeOf((*MockDB)(nil).GetMulti), ctx, records)
 }
 
+// GetReader mocks base method.
+func (m *MockDB) GetReader(ctx context.Context, query dal.Query) (dal.Reader, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetReader", ctx, query)
+	ret0, _ := ret[0].(dal.Reader)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetReader indicates an expected call of GetReader.
+func (mr *MockDBMockRecorder) GetReader(ctx, query any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReader", reflect.TypeOf((*MockDB)(nil).GetReader), ctx, query)
+}
+
 // ID mocks base method.
 func (m *MockDB) ID() string {
 	m.ctrl.T.Helper()
@@ -112,34 +127,24 @@ func (mr *MockDBMockRecorder) ID() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ID", reflect.TypeOf((*MockDB)(nil).ID))
 }
 
-// QueryAllRecords mocks base method.
-func (m *MockDB) QueryAllRecords(ctx context.Context, query dal.Query) ([]dal.Record, error) {
+// ReadAllRecords mocks base method.
+func (m *MockDB) ReadAllRecords(ctx context.Context, query dal.Query, o ...func(*dal.ReaderOptions)) ([]dal.Record, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryAllRecords", ctx, query)
+	varargs := []any{ctx, query}
+	for _, a := range o {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ReadAllRecords", varargs...)
 	ret0, _ := ret[0].([]dal.Record)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// QueryAllRecords indicates an expected call of QueryAllRecords.
-func (mr *MockDBMockRecorder) QueryAllRecords(ctx, query any) *gomock.Call {
+// ReadAllRecords indicates an expected call of ReadAllRecords.
+func (mr *MockDBMockRecorder) ReadAllRecords(ctx, query any, o ...any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryAllRecords", reflect.TypeOf((*MockDB)(nil).QueryAllRecords), ctx, query)
-}
-
-// QueryReader mocks base method.
-func (m *MockDB) QueryReader(ctx context.Context, query dal.Query) (dal.Reader, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "QueryReader", ctx, query)
-	ret0, _ := ret[0].(dal.Reader)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// QueryReader indicates an expected call of QueryReader.
-func (mr *MockDBMockRecorder) QueryReader(ctx, query any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "QueryReader", reflect.TypeOf((*MockDB)(nil).QueryReader), ctx, query)
+	varargs := append([]any{ctx, query}, o...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadAllRecords", reflect.TypeOf((*MockDB)(nil).ReadAllRecords), varargs...)
 }
 
 // RunReadonlyTransaction mocks base method.

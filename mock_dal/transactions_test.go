@@ -135,34 +135,34 @@ func TestMockReadTransaction_QueryMethods(t *testing.T) {
 	mockTx := NewMockReadTransaction(ctrl)
 	ctx := context.Background()
 
-	t.Run("QueryAllRecords success", func(t *testing.T) {
+	t.Run("ReadAllRecords success", func(t *testing.T) {
 		expectedRecords := []dal.Record{NewMockRecord(ctrl)}
-		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
-		records, err := mockTx.QueryAllRecords(ctx, nil)
+		mockTx.EXPECT().ReadAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
+		records, err := mockTx.ReadAllRecords(ctx, nil)
 		assert.NoError(t, err)
 		assert.Equal(t, expectedRecords, records)
 	})
 
-	t.Run("QueryAllRecords error", func(t *testing.T) {
+	t.Run("ReadAllRecords error", func(t *testing.T) {
 		expectedErr := errors.New("query all error")
-		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
-		records, err := mockTx.QueryAllRecords(ctx, nil)
+		mockTx.EXPECT().ReadAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
+		records, err := mockTx.ReadAllRecords(ctx, nil)
 		assert.Error(t, err)
 		assert.Nil(t, records)
 		assert.Equal(t, expectedErr, err)
 	})
 
 	t.Run("QueryReader success", func(t *testing.T) {
-		mockTx.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, nil)
-		reader, err := mockTx.QueryReader(ctx, nil)
+		mockTx.EXPECT().GetReader(ctx, gomock.Any()).Return(nil, nil)
+		reader, err := mockTx.GetReader(ctx, nil)
 		assert.NoError(t, err)
 		assert.Nil(t, reader)
 	})
 
 	t.Run("QueryReader error", func(t *testing.T) {
 		expectedErr := errors.New("query reader error")
-		mockTx.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, expectedErr)
-		reader, err := mockTx.QueryReader(ctx, nil)
+		mockTx.EXPECT().GetReader(ctx, gomock.Any()).Return(nil, expectedErr)
+		reader, err := mockTx.GetReader(ctx, nil)
 		assert.Error(t, err)
 		assert.Nil(t, reader)
 		assert.Equal(t, expectedErr, err)
@@ -355,34 +355,34 @@ func TestMockReadwriteTransaction_QueryMethods(t *testing.T) {
 	mockTx := NewMockReadwriteTransaction(ctrl)
 	ctx := context.Background()
 
-	t.Run("QueryAllRecords success", func(t *testing.T) {
+	t.Run("ReadAllRecords success", func(t *testing.T) {
 		expectedRecords := []dal.Record{NewMockRecord(ctrl)}
-		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
-		records, err := mockTx.QueryAllRecords(ctx, nil)
+		mockTx.EXPECT().ReadAllRecords(ctx, gomock.Any()).Return(expectedRecords, nil)
+		records, err := mockTx.ReadAllRecords(ctx, nil)
 		assert.NoError(t, err)
 		assert.Equal(t, expectedRecords, records)
 	})
 
-	t.Run("QueryAllRecords error", func(t *testing.T) {
+	t.Run("ReadAllRecords error", func(t *testing.T) {
 		expectedErr := errors.New("query all error")
-		mockTx.EXPECT().QueryAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
-		records, err := mockTx.QueryAllRecords(ctx, nil)
+		mockTx.EXPECT().ReadAllRecords(ctx, gomock.Any()).Return(nil, expectedErr)
+		records, err := mockTx.ReadAllRecords(ctx, nil)
 		assert.Error(t, err)
 		assert.Nil(t, records)
 		assert.Equal(t, expectedErr, err)
 	})
 
 	t.Run("QueryReader success", func(t *testing.T) {
-		mockTx.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, nil)
-		reader, err := mockTx.QueryReader(ctx, nil)
+		mockTx.EXPECT().GetReader(ctx, gomock.Any()).Return(nil, nil)
+		reader, err := mockTx.GetReader(ctx, nil)
 		assert.NoError(t, err)
 		assert.Nil(t, reader)
 	})
 
 	t.Run("QueryReader error", func(t *testing.T) {
 		expectedErr := errors.New("query reader error")
-		mockTx.EXPECT().QueryReader(ctx, gomock.Any()).Return(nil, expectedErr)
-		reader, err := mockTx.QueryReader(ctx, nil)
+		mockTx.EXPECT().GetReader(ctx, gomock.Any()).Return(nil, expectedErr)
+		reader, err := mockTx.GetReader(ctx, nil)
 		assert.Error(t, err)
 		assert.Nil(t, reader)
 		assert.Equal(t, expectedErr, err)
