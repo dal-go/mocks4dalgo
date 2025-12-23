@@ -1,14 +1,15 @@
 package mock_dal
 
 import (
+	"testing"
+
 	"github.com/dal-go/dalgo/dal"
 	"go.uber.org/mock/gomock"
-	"testing"
 )
 
 func TestNewMockReader(t *testing.T) {
 	ctrl := gomock.NewController(t)
-	readerMock := NewMockReader(ctrl)
+	readerMock := NewMockRecordsReader(ctrl)
 
 	readerMock.EXPECT().Close().Return(nil).AnyTimes()
 
@@ -23,7 +24,7 @@ func TestNewMockReader(t *testing.T) {
 		return dal.NewRecord(key), nil
 	})
 
-	var reader dal.Reader = readerMock
+	var reader dal.RecordsReader = readerMock
 	// Call Cursor to cover it
 	if cursor, err := reader.Cursor(); err != nil || cursor != "" {
 		t.Errorf("reader.Cursor(): expected \"\", nil; got %q, %v", cursor, err)

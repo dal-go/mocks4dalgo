@@ -14,6 +14,7 @@ import (
 	reflect "reflect"
 
 	dal "github.com/dal-go/dalgo/dal"
+	recordset "github.com/dal-go/dalgo/recordset"
 	update "github.com/dal-go/dalgo/update"
 	gomock "go.uber.org/mock/gomock"
 )
@@ -85,39 +86,34 @@ func (mr *MockReadSessionMockRecorder) GetMulti(ctx, records any) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMulti", reflect.TypeOf((*MockReadSession)(nil).GetMulti), ctx, records)
 }
 
-// GetReader mocks base method.
-func (m *MockReadSession) GetReader(ctx context.Context, query dal.Query) (dal.Reader, error) {
+// GetRecordsReader mocks base method.
+func (m *MockReadSession) GetRecordsReader(ctx context.Context, query dal.Query) (dal.RecordsReader, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetReader", ctx, query)
-	ret0, _ := ret[0].(dal.Reader)
+	ret := m.ctrl.Call(m, "GetRecordsReader", ctx, query)
+	ret0, _ := ret[0].(dal.RecordsReader)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetReader indicates an expected call of GetReader.
-func (mr *MockReadSessionMockRecorder) GetReader(ctx, query any) *gomock.Call {
+// GetRecordsReader indicates an expected call of GetRecordsReader.
+func (mr *MockReadSessionMockRecorder) GetRecordsReader(ctx, query any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReader", reflect.TypeOf((*MockReadSession)(nil).GetReader), ctx, query)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecordsReader", reflect.TypeOf((*MockReadSession)(nil).GetRecordsReader), ctx, query)
 }
 
-// ReadAllRecords mocks base method.
-func (m *MockReadSession) ReadAllRecords(ctx context.Context, query dal.Query, o ...func(*dal.ReaderOptions)) ([]dal.Record, error) {
+// GetRecordsetReader mocks base method.
+func (m *MockReadSession) GetRecordsetReader(ctx context.Context, query dal.Query, rs *recordset.Recordset) (dal.RecordsetReader, error) {
 	m.ctrl.T.Helper()
-	varargs := []any{ctx, query}
-	for _, a := range o {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ReadAllRecords", varargs...)
-	ret0, _ := ret[0].([]dal.Record)
+	ret := m.ctrl.Call(m, "GetRecordsetReader", ctx, query, rs)
+	ret0, _ := ret[0].(dal.RecordsetReader)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// ReadAllRecords indicates an expected call of ReadAllRecords.
-func (mr *MockReadSessionMockRecorder) ReadAllRecords(ctx, query any, o ...any) *gomock.Call {
+// GetRecordsetReader indicates an expected call of GetRecordsetReader.
+func (mr *MockReadSessionMockRecorder) GetRecordsetReader(ctx, query, rs any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, query}, o...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadAllRecords", reflect.TypeOf((*MockReadSession)(nil).ReadAllRecords), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecordsetReader", reflect.TypeOf((*MockReadSession)(nil).GetRecordsetReader), ctx, query, rs)
 }
 
 // MockWriteSession is a mock of WriteSession interface.
@@ -390,19 +386,34 @@ func (mr *MockReadwriteSessionMockRecorder) GetMulti(ctx, records any) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMulti", reflect.TypeOf((*MockReadwriteSession)(nil).GetMulti), ctx, records)
 }
 
-// GetReader mocks base method.
-func (m *MockReadwriteSession) GetReader(ctx context.Context, query dal.Query) (dal.Reader, error) {
+// GetRecordsReader mocks base method.
+func (m *MockReadwriteSession) GetRecordsReader(ctx context.Context, query dal.Query) (dal.RecordsReader, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetReader", ctx, query)
-	ret0, _ := ret[0].(dal.Reader)
+	ret := m.ctrl.Call(m, "GetRecordsReader", ctx, query)
+	ret0, _ := ret[0].(dal.RecordsReader)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetReader indicates an expected call of GetReader.
-func (mr *MockReadwriteSessionMockRecorder) GetReader(ctx, query any) *gomock.Call {
+// GetRecordsReader indicates an expected call of GetRecordsReader.
+func (mr *MockReadwriteSessionMockRecorder) GetRecordsReader(ctx, query any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetReader", reflect.TypeOf((*MockReadwriteSession)(nil).GetReader), ctx, query)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecordsReader", reflect.TypeOf((*MockReadwriteSession)(nil).GetRecordsReader), ctx, query)
+}
+
+// GetRecordsetReader mocks base method.
+func (m *MockReadwriteSession) GetRecordsetReader(ctx context.Context, query dal.Query, rs *recordset.Recordset) (dal.RecordsetReader, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRecordsetReader", ctx, query, rs)
+	ret0, _ := ret[0].(dal.RecordsetReader)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRecordsetReader indicates an expected call of GetRecordsetReader.
+func (mr *MockReadwriteSessionMockRecorder) GetRecordsetReader(ctx, query, rs any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecordsetReader", reflect.TypeOf((*MockReadwriteSession)(nil).GetRecordsetReader), ctx, query, rs)
 }
 
 // Insert mocks base method.
@@ -441,26 +452,6 @@ func (mr *MockReadwriteSessionMockRecorder) InsertMulti(ctx, records any, opts .
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]any{ctx, records}, opts...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "InsertMulti", reflect.TypeOf((*MockReadwriteSession)(nil).InsertMulti), varargs...)
-}
-
-// ReadAllRecords mocks base method.
-func (m *MockReadwriteSession) ReadAllRecords(ctx context.Context, query dal.Query, o ...func(*dal.ReaderOptions)) ([]dal.Record, error) {
-	m.ctrl.T.Helper()
-	varargs := []any{ctx, query}
-	for _, a := range o {
-		varargs = append(varargs, a)
-	}
-	ret := m.ctrl.Call(m, "ReadAllRecords", varargs...)
-	ret0, _ := ret[0].([]dal.Record)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ReadAllRecords indicates an expected call of ReadAllRecords.
-func (mr *MockReadwriteSessionMockRecorder) ReadAllRecords(ctx, query any, o ...any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	varargs := append([]any{ctx, query}, o...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadAllRecords", reflect.TypeOf((*MockReadwriteSession)(nil).ReadAllRecords), varargs...)
 }
 
 // Set mocks base method.

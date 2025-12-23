@@ -2,8 +2,9 @@ package mock_dal
 
 import (
 	"errors"
-	"github.com/dal-go/dalgo/dal"
 	"time"
+
+	"github.com/dal-go/dalgo/dal"
 )
 
 // SelectResult is a helper class that can be used in test definitions (TT)
@@ -51,6 +52,6 @@ func (reader *recordReader) Next() (record dal.Record, err error) {
 }
 
 // NewRecordsReader creates a reader that returns given records
-func NewRecordsReader(delay time.Duration, records ...dal.Record) dal.Reader {
+func NewRecordsReader(delay time.Duration, records ...dal.Record) dal.RecordsReader {
 	return &recordReader{delay: delay, records: records}
 }

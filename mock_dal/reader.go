@@ -12,7 +12,6 @@ package mock_dal
 import (
 	reflect "reflect"
 
-	dal "github.com/dal-go/dalgo/dal"
 	gomock "go.uber.org/mock/gomock"
 )
 
@@ -67,19 +66,4 @@ func (m *MockReader) Cursor() (string, error) {
 func (mr *MockReaderMockRecorder) Cursor() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Cursor", reflect.TypeOf((*MockReader)(nil).Cursor))
-}
-
-// Next mocks base method.
-func (m *MockReader) Next() (dal.Record, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Next")
-	ret0, _ := ret[0].(dal.Record)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Next indicates an expected call of Next.
-func (mr *MockReaderMockRecorder) Next() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Next", reflect.TypeOf((*MockReader)(nil).Next))
 }
